@@ -5,7 +5,7 @@ import Link from 'next/link';
 type TButtonProps = {
   title: string;
   icon?: ReactNode; // Icon component (e.g., an SVG or JSX element)
-  iconPosition?: 'left' | 'right'; // Position of the icon
+  iconPosition?: 'left' | 'right';
   hasBorder?: boolean; // Whether the button has a border
   shadowStrength?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'; // Shadow strength
   variant?: 'primary' | 'secondary' | 'danger'; // Button style variant
