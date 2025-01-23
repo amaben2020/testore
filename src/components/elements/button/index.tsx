@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import Link from 'next/link';
 
 type TButtonProps = {
-  title: string; // Text for the button
+  title: string;
   icon?: ReactNode; // Icon component (e.g., an SVG or JSX element)
   iconPosition?: 'left' | 'right'; // Position of the icon
   hasBorder?: boolean; // Whether the button has a border
