@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 const Hero = () => {
   return (
-    <div className="min-h-[300px] xl:min-h-[675px] w-full bg-gray-light flex flex-col items-center relative ">
+    <div className="min-h-[300px] xl:min-h-[675px] w-full bg-gray-light flex flex-col items-center relative p-5">
       <div className="max-w-[865px] flex flex-col items-center gap-4 text-center mt-10 xl:mt-32">
         <h1 className="text-black">
           Launch Your E-Commerce Platform with Trade Enablers and Next.js

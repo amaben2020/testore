@@ -1,10 +1,6 @@
 'use client';
 import Button from '@/components/elements/button';
 import Image from 'next/image';
-import Link from 'next/link';
-import { useParams } from 'next/navigation';
-import { useState } from 'react';
-import Drawer from 'react-modern-drawer';
 import 'react-modern-drawer/dist/index.css';
 import MenuDrawer from '../drawer';
 import useToggle from '@/hooks/useToggle';

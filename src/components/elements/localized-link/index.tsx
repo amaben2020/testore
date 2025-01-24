@@ -18,6 +18,7 @@ const LocalizedClientLink = ({
   className?: string;
   onClick?: () => void;
   passHref?: true;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [x: string]: any;
 }) => {
   const { countryCode } = useParams();

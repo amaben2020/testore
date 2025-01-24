@@ -35,7 +35,7 @@ const Home = async ({
   );
 
   return (
-    <section className="border-b-0 lg:border-b">
+    <section>
       <Hero />
 
       <ProductCardLayout

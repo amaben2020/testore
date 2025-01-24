@@ -20,7 +20,7 @@ const ProductCardLayout = ({
         <h3 className="text-sm text-black capitalize lg:text-2xl">{title}</h3>
         <Link href="/products">
           <span className="flex items-center gap-2">
-            <p className="text-[#0073E6] text-lg">See all</p>
+            <p className="text-[#0073E6] text-xs md:text-lg">See all</p>
             <Image alt="" src="/blue-arrow.svg" width={24} height={24} />
           </span>
         </Link>
@@ -38,7 +38,10 @@ const ProductCardLayout = ({
               title={title}
               image={thumbnail!}
               id={id}
-              price={variants[0]?.calculated_price?.calculated_amount ?? 0}
+              price={
+                (variants[0]?.calculated_price?.calculated_amount ??
+                  0) as number
+              }
               key={id}
             />
           ))}
