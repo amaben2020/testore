@@ -5,6 +5,7 @@ import { HttpTypes } from '@medusajs/types';
 import { fetchProductsForCollection } from '@/services/products';
 import Hero from '@/components/molecules/hero';
 import { getRegion } from '@/lib/data/regions';
+import CTA from '@/components/molecules/cta';
 
 const Home = async ({
   params,
@@ -15,14 +16,12 @@ const Home = async ({
 
   const region = await getRegion(countryCode);
 
-  // Fetch collections from the API
   const collections = await fetchAPI('/store/collections');
 
   const { products } = await fetchAPI(
     `/store/products?collection_id=null&limit=3&fields=*variants.calculated_price&region_id=${region?.id}`
   );
 
-  // Fetch products for each collection
   const [latestDrops, recommended] = await Promise.all(
     collections?.collections?.map(
       async (collection: HttpTypes.StoreCollection) => {
@@ -44,12 +43,16 @@ const Home = async ({
         title={recommended.title}
         products={recommended.products}
       />
+
       <ProductCardLayout
         hasBorder
         title={latestDrops.title}
         products={latestDrops.products}
       />
+
       <ProductCardLayout title="TE STORE" products={products} />
+
+      <CTA />
     </section>
   );
 };

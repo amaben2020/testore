@@ -41,8 +41,8 @@ const Button: React.FC<TButtonProps> = ({
 
       // Size styles
       'px-1 xl:px-4 py-1 xl:py-2 text-xs lg:text-sm': size === 'sm',
-      'px-3 lg:px-6  py-1.5 lg:py-3 text-xs lg:text-base': size === 'md',
-      'px-8 py-4 text-xs lg:text-lg': size === 'lg',
+      'px-3 lg:px-6  py-2 lg:py-3 text-xs lg:text-base': size === 'md',
+      'px-8 py-4 text-xs lg:text-base': size === 'lg',
 
       // Border styles
       'border border-gray-300': hasBorder,
@@ -64,7 +64,11 @@ const Button: React.FC<TButtonProps> = ({
   // If `href` is provided and no `onClick`, render a Link
   if (href && !onClick) {
     return (
-      <Link href={href} className={buttonClasses}>
+      <Link
+        href={href}
+        className={buttonClasses}
+        target={href.includes('https') ? '_blank' : ''}
+      >
         {icon && iconPosition === 'left' && (
           <span className="mr-2">{icon}</span>
         )}

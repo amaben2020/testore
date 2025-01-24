@@ -19,6 +19,10 @@ body {
     @apply text-lg xl:text-[42px] leading-[25px] xl:leading-[58px];
   }
 
+  h2 {
+    @apply text-lg xl:text-[42px] leading-[25px] xl:leading-[58px];
+  }
+
   p {
     @apply text-sm text-gray-dark;
   }

@@ -5,7 +5,7 @@ import Button from '../button';
 import clsx from 'clsx';
 
 type TProductCard = {
-  id: number;
+  id: string;
   title: string;
   image: string;
   price: number;
@@ -17,7 +17,7 @@ const ProductCard = ({ id, title, image, price }: TProductCard) => {
   const isAdded = false;
   return (
     <div
-      className="relative xs:max-w-[160px] md:max-w-[320px]  xl:max-w-[525px] hover:cursor-pointer flex flex-col justify-between rounded-lg"
+      className="relative xs:max-w-[160px] md:max-w-[320px] xl:max-w-[525px] hover:cursor-pointer flex flex-col justify-between rounded-lg"
       key={id}
     >
       {/* Add to Cart Button */}
@@ -38,7 +38,7 @@ const ProductCard = ({ id, title, image, price }: TProductCard) => {
       />
 
       {/* Image */}
-      <div className="flex items-center justify-center max-h-[170px] md:max-h-[572px]  rounded-lg bg-gray-light hover:bg-gray-200">
+      <div className="flex items-center justify-center max-h-[170px] md:max-h-[572px] rounded-lg bg-gray-light hover:bg-gray-200">
         <Image
           src={image}
           alt={title}

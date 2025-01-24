@@ -33,18 +33,14 @@ const ProductCardLayout = ({
         )}
       >
         {Array.isArray(products) &&
-          products.map((product) => (
-            <>
-              <ProductCard
-                title={product?.title}
-                image={product?.thumbnail}
-                id={product?.id}
-                price={
-                  product?.variants[0]?.calculated_price?.calculated_amount
-                }
-                key={product?.id}
-              />
-            </>
+          products.map(({ title, thumbnail, id, variants }) => (
+            <ProductCard
+              title={title}
+              image={thumbnail!}
+              id={id}
+              price={variants[0]?.calculated_price?.calculated_amount ?? 0}
+              key={id}
+            />
           ))}
       </div>
     </section>

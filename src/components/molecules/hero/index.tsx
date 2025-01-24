@@ -1,6 +1,6 @@
+import Button from '@/components/elements/button';
 import { Github } from '@medusajs/icons';
 import Image from 'next/image';
-import Link from 'next/link';
 
 const Hero = () => {
   return (
@@ -13,14 +13,18 @@ const Hero = () => {
           Easily start your online store using our ready-made template and
           tools.
         </h2>
-        <Link
+
+        <Button
+          className="w-[200px] !text-black font-normal"
+          title="View on GitHub"
+          icon={<Github />}
+          iconPosition="right"
+          shadowStrength="lg"
+          variant="primary"
+          size="md"
           href="https://github.com/medusajs/nextjs-starter-medusa"
-          target="_blank"
-          className="flex items-center gap-2 px-5 py-3.5 text-base border rounded-lg shadow-lg"
-        >
-          <p className="text-base text-black">View on GitHub</p>
-          <Github className="ml-2" />
-        </Link>
+          hasBorder
+        />
       </div>
       <div className="absolute bottom-0 flex justify-center w-full">
         <Image
