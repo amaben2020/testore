@@ -4,45 +4,36 @@ import ProductCardLayout from '@/components/layout/product-card-layout';
 import { HttpTypes } from '@medusajs/types';
 import { fetchProductsForCollection } from '@/services/products';
 import Hero from '@/components/molecules/hero';
+import { getRegion } from '@/lib/data/regions';
 
 const Home = async ({
   params,
 }: {
   params: Promise<{ countryCode: string }>;
 }) => {
-  const code = await params;
+  const { countryCode } = await params;
 
-  const { countryCode } = code;
-
-  const region = await fetchAPI(
-    '/store/regions/reg_01JJ6XBW7EVM3N8RSQV8ZXT5XQ'
-  );
-
-  console.log(region);
-
-  //  const region = await getRegion(countryCode);
+  const region = await getRegion(countryCode);
 
   // Fetch collections from the API
   const collections = await fetchAPI('/store/collections');
 
   const { products } = await fetchAPI(
-    '/store/products?collection_id=null&limit=3&fields=*variants.calculated_price&region_id=reg_01JJ6XBW7EVM3N8RSQV8ZXT5XQ'
+    `/store/products?collection_id=null&limit=3&fields=*variants.calculated_price&region_id=${region?.id}`
   );
 
   // Fetch products for each collection
   const [latestDrops, recommended] = await Promise.all(
     collections?.collections?.map(
       async (collection: HttpTypes.StoreCollection) => {
-        const products = await fetchProductsForCollection(collection.id);
+        const products = await fetchProductsForCollection(
+          collection.id,
+          region?.id ? region.id : ''
+        );
         return { ...collection, products };
       }
     )
   );
-
-  console.log('latestDrops', latestDrops);
-  console.log('recommended', recommended);
-
-  console.log('productsNotInCollection', products);
 
   return (
     <section className="border-b-0 lg:border-b">
@@ -58,7 +49,7 @@ const Home = async ({
         title={latestDrops.title}
         products={latestDrops.products}
       />
-      <ProductCardLayout title="TE STORE" products={[...Array(3)]} />
+      <ProductCardLayout title="TE STORE" products={products} />
     </section>
   );
 };

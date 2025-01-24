@@ -29,7 +29,7 @@ const ProductCardLayout = ({
       <div
         className={clsx(
           hasBorder && 'border-b-0 lg:border-b',
-          'grid grid-cols-2 gap-10  lg:grid-cols-3 xl:pb-12'
+          'grid grid-cols-2 gap-6 xl:gap-10 lg:grid-cols-3 xl:pb-12'
         )}
       >
         {Array.isArray(products) &&

@@ -30,7 +30,7 @@ export const fetchAPI = async (
 
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL}${url}`,
+      `${process.env.MEDUSA_BACKEND_URL}${url}`,
       // { headers, ...options }
       {
         method: 'GET',
