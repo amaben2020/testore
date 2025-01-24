@@ -145,9 +145,8 @@ export default async function Footer() {
         </div>
         <div className="flex justify-between w-full mb-16 text-ui-fg-muted">
           <Text className="txt-compact-small">
-            © {new Date().getFullYear()} Medusa Store. All rights reserved.
+            © {new Date().getFullYear()} Te Store. All rights reserved.
           </Text>
-          {/* <MedusaCTA /> */}
         </div>
       </div>
     </footer>

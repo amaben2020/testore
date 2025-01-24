@@ -5,7 +5,7 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import { countries } from '@/components/molecules/drawer/data/countries';
 
-const Dropdown = () => {
+const RegionDropdown = () => {
   const [isHovered, setIsHovered] = useState(false);
   const pathname = usePathname();
 
@@ -23,19 +23,18 @@ const Dropdown = () => {
     <div
       className="relative inline-block text-left"
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(true)}
       onClick={() => setIsHovered((p) => !p)}
     >
       {/* Button */}
       <button
         type="button"
-        className="inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-gray-900 bg-white rounded-md shadow gap-x-2 ring-1 hover:bg-gray-50"
+        className="inline-flex items-center justify-center px-4 py-2 text-sm font-semibold bg-white rounded-md shadow text-gray-dark gap-x-2 hover:bg-gray-50"
         id="menu-button"
         aria-expanded={isHovered}
         aria-haspopup="true"
       >
-        Shipping to:
-        <span className="text-gray-700">Select Country</span>
+        Select:
+        <span className="text-gray-700">Country</span>
         <svg
           className="w-4 h-4 text-gray-500"
           xmlns="http://www.w3.org/2000/svg"
@@ -55,7 +54,7 @@ const Dropdown = () => {
       {/* Dropdown */}
       {isHovered && (
         <div
-          className="absolute right-0 z-10 w-56 mt-2 bg-white rounded-md shadow-lg ring-1 ring-black/5"
+          className="absolute z-10 mt-2 bg-white rounded-md shadow-lg -right-10 w-52 ring-1 ring-black/5"
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="menu-button"
@@ -81,4 +80,4 @@ const Dropdown = () => {
   );
 };
 
-export default Dropdown;
+export default RegionDropdown;

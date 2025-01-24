@@ -1,71 +1,67 @@
-import useToggle from '@/hooks/useToggle';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import { useParams, usePathname } from 'next/navigation';
 import React from 'react';
 import Drawer from 'react-modern-drawer';
-import { countries } from './data/countries';
-import Dropdown from '@/components/elements/dropdown';
+import RegionDropdown from '@/components/elements/dropdown';
+import { menuItems } from './data/menu';
+import clsx from 'clsx';
 
-const MenuDrawer = ({ isOpen, toggleDrawer }) => {
+const MenuDrawer = ({
+  isOpen,
+  toggleDrawer,
+}: {
+  isOpen: boolean;
+  toggleDrawer: () => void;
+}) => {
   const { countryCode } = useParams();
-  console.log(countryCode);
+  const pathname = usePathname();
 
+  console.log(pathname);
   return (
     <Drawer
       open={isOpen}
       onClose={toggleDrawer}
       direction="left"
-      className="w-[200px] xl:min-w-[400px] bla border"
+      className="border"
     >
-      <aside className="flex flex-col gap-3 border bg-gray-light">
-        <nav className="bg-white border-b shadow-sm">
-          <div>
-            {/* Links */}
-            <div className="flex flex-col items-center space-x-6 text-gray-700">
-              <Link href="/" className="hover:text-blue-600">
-                Home
-              </Link>
-              <Link href="/store" className="hover:text-blue-600">
-                Store
-              </Link>
-              <Link href="/account" className="hover:text-blue-600">
-                Account
-              </Link>
-              <Link href="/cart" className="hover:text-blue-600">
-                Cart
-              </Link>
-            </div>
+      <aside className="flex flex-col h-full bg-gray-light">
+        {/* Current Region */}
+        <div className="p-4 bg-white border-b shadow-sm">
+          <p className="flex items-center gap-3 text-sm">
+            <span className="font-medium ">Your Region:</span>
+            <p className="font-bold uppercase">{countryCode}</p>
+          </p>
+        </div>
 
-            {/* Dropdown */}
-            <Dropdown />
-
-            {/* <div className="relative group">
-              <div className="flex items-center space-x-2 text-gray-700 cursor-pointer hover:text-blue-600">
-                <span>Shipping to:</span>
-                <span className="font-semibold">Select Country</span>
-              </div>
-
-              <div className="absolute z-10 hidden w-56 mt-2 bg-white border border-gray-200 rounded-md shadow-lg group-hover:block">
-                {countries.map((country) => (
-                  <div
-                    key={country.code}
-                    className="flex items-center p-3 space-x-4 cursor-pointer hover:bg-blue-50"
-                  >
-                    <span className="text-lg">{country.flag}</span>
-                    <span className="font-medium text-gray-700">
-                      {country.name} ({country.code.toUpperCase()})
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div> */}
-          </div>
-
-          {/* Footer */}
-          <footer className="py-4 mt-6 text-sm text-center text-gray-500 border-t">
-            © 2025 Medusa Store. All rights reserved.
-          </footer>
+        {/* Navigation Links */}
+        <nav className="flex-1 overflow-y-auto">
+          <ul className="flex flex-col py-4 space-y-2">
+            {menuItems.map(({ label, href }) => (
+              <li key={label}>
+                <Link
+                  href={href}
+                  className={clsx(
+                    pathname.includes(href) && label !== 'Home'
+                      ? 'text-lg font-bold'
+                      : '',
+                    'block px-6 py-3  text-gray-dark hover:bg-gray-200 hover:text-blue-600 text-md'
+                  )}
+                >
+                  {label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+          {/* Region Dropdown */}
+          <div className="px-6">
+            <RegionDropdown />
+          </div>{' '}
         </nav>
+
+        {/* Footer */}
+        <footer className="py-4 text-sm text-center text-gray-500 border-t">
+          © 2025 Te Store. All rights reserved.
+        </footer>
       </aside>
     </Drawer>
   );
