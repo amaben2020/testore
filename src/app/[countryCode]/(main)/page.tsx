@@ -1,10 +1,27 @@
 import { fetchAPI } from '@/services/base';
-import Hero from '../components/molecules/hero';
+
 import ProductCardLayout from '@/components/layout/product-card-layout';
 import { HttpTypes } from '@medusajs/types';
 import { fetchProductsForCollection } from '@/services/products';
+import Hero from '@/components/molecules/hero';
 
-const Home = async () => {
+const Home = async ({
+  params,
+}: {
+  params: Promise<{ countryCode: string }>;
+}) => {
+  const code = await params;
+
+  const { countryCode } = code;
+
+  const region = await fetchAPI(
+    '/store/regions/reg_01JJ6XBW7EVM3N8RSQV8ZXT5XQ'
+  );
+
+  console.log(region);
+
+  //  const region = await getRegion(countryCode);
+
   // Fetch collections from the API
   const collections = await fetchAPI('/store/collections');
 

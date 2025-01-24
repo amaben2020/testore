@@ -20,7 +20,6 @@ export const fetchAPI = async (
     ...options.headers,
     Authorization: `Bearer ${token}`,
     'Content-Type': 'application/json',
-    // 'x-publishable-api-key': process.env.NEXT_PUBLIC_PUBLISHABLE_API_KEY || '',
     ...(isPublic
       ? {}
       : {

@@ -8,7 +8,7 @@ type TButtonProps = {
   iconPosition?: 'left' | 'right';
   hasBorder?: boolean; // Whether the button has a border
   shadowStrength?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'; // Shadow strength
-  variant?: 'primary' | 'secondary' | 'danger'; // Button style variant
+  variant?: 'primary' | 'secondary'; // Button style variant
   size?: 'sm' | 'md' | 'lg'; // Button size
   onClick?: () => void; // Click handler
   disabled?: boolean; // Disabled state
@@ -38,7 +38,6 @@ const Button: React.FC<TButtonProps> = ({
       'bg-white text-sm text-gray-dark rounded-md hover:bg-gray-light':
         variant === 'primary',
       'bg-gray-100 text-black hover:bg-gray-200': variant === 'secondary',
-      'bg-red-500 text-white hover:bg-red-600': variant === 'danger',
 
       // Size styles
       'px-2 xl:px-4 py-1 xl:py-2 text-sm': size === 'sm',
