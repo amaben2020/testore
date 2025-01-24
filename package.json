@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.0",
     "@medusajs/js-sdk": "^2.3.1",
     "@medusajs/medusa": "^1.20.11",
     "@medusajs/types": "^2.3.1",
@@ -19,16 +20,20 @@
     "axios": "^1.7.9",
     "clsx": "^2.1.1",
     "medusa-react": "^9.0.18",
+    "motion": "^12.0.5",
     "next": "15.1.6",
     "react": "^19.0.0",
+    "react-autosuggest": "^10.1.0",
     "react-dom": "^19.0.0",
     "react-modern-drawer": "^1.4.0",
+    "tailwind-merge": "^2.6.0",
     "tailwindcss-radix": "^3.0.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@types/node": "^20",
     "@types/react": "^19",
+    "@types/react-autosuggest": "^10.1.11",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.1.6",

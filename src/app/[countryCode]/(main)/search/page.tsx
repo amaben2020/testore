@@ -1,25 +1,30 @@
 import React from 'react';
 import { searchProducts } from './action';
-import { fetchAPI } from '../../lib/fetchAPI';
-import { getCategoryByHandle, listCategories } from '../../lib/data/categories';
+import { fetchAPI } from '@/services/base';
+import { getCategoryByHandle, listCategories } from '@/lib/data/categories';
 
 const fetchProducts = async (queryParams: string) => {
-  const url = `/store/products?q=black`;
+  const url = `/store/products?q=${queryParams}`;
   return fetchAPI(url);
 };
 
-const page = async ({ searchParams }: { searchParams: any }) => {
-  // const queryParams = new URLSearchParams(searchParams);
-  const queryParams = await searchParams;
+const SearchPage = async ({
+  searchParams,
+}: {
+  searchParams: { q: string };
+}) => {
+  const { q } = await searchParams;
 
-  console.log('queryParams', queryParams);
+  const products = await fetchProducts(String(q));
 
-  const products = await fetchProducts(String(queryParams));
+  // const category = await getCategoryByHandle(['watches']);
+  // const listCategory = await listCategories({});
+  // console.log('category', category);
+  // console.log('listCategory', listCategory);
 
-  const category = await getCategoryByHandle(['watches']);
-  const listCategory = await listCategories({});
-  console.log('category', category);
-  console.log('listCategory', listCategory);
+  if (!products) {
+    return <p>Nothing found</p>;
+  }
 
   return (
     <div>
@@ -40,8 +45,9 @@ const page = async ({ searchParams }: { searchParams: any }) => {
         </select>
         <button type="submit">Search</button>
       </form>
-      <main>
-        {JSON.stringify(products)}
+      {JSON.stringify(products)}
+      {/* <main>
+       
         <h1>Search Results</h1>
         {products?.length > 0 ? (
           <ul>
@@ -52,9 +58,9 @@ const page = async ({ searchParams }: { searchParams: any }) => {
         ) : (
           <p>No products found.</p>
         )}
-      </main>
+      </main> */}
     </div>
   );
 };
 
-export default page;
+export default SearchPage;

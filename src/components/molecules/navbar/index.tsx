@@ -4,6 +4,8 @@ import Image from 'next/image';
 import 'react-modern-drawer/dist/index.css';
 import MenuDrawer from '../drawer';
 import useToggle from '@/hooks/useToggle';
+import SearchModal from '../search-modal';
+import LocalizedClientLink from '@/components/elements/localized-link';
 
 const Navbar = () => {
   const { toggle: toggleDrawer, isOpen } = useToggle();
@@ -24,27 +26,19 @@ const Navbar = () => {
         <MenuDrawer isOpen={isOpen} toggleDrawer={toggleDrawer} />
 
         {/* Logo */}
-
-        <Image
-          src="/testore.svg"
-          alt=""
-          className="xl:w-[155px] w-[72px]"
-          width={155}
-          height={45}
-        />
+        <LocalizedClientLink href="/">
+          <Image
+            src="/testore.svg"
+            alt=""
+            className="xl:w-[155px] w-[72px]"
+            width={155}
+            height={45}
+          />
+        </LocalizedClientLink>
 
         {/* Right Items */}
         <div className="flex space-x-2 xl:space-x-6">
-          <Button
-            title="Search"
-            icon={<Image src="/search.svg" alt="" width={16} height={16} />}
-            iconPosition="left"
-            shadowStrength="sm"
-            variant="primary"
-            size="sm"
-            onClick={() => alert('Button clicked!')}
-            noTextOnMobile
-          />
+          <SearchModal />
           <Button
             title="Account"
             iconPosition="left"
