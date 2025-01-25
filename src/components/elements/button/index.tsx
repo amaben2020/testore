@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import clsx from 'clsx';
 import Link from 'next/link';
 
-type TButtonProps = {
+interface IButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   title: string;
   icon?: ReactNode; // Icon component (e.g., an SVG or JSX element)
   iconPosition?: 'left' | 'right';
@@ -15,9 +15,9 @@ type TButtonProps = {
   className?: string; // Additional custom class names
   href?: string;
   noTextOnMobile?: boolean;
-};
+}
 
-const Button: React.FC<TButtonProps> = ({
+const Button: React.FC<IButtonProps> = ({
   title,
   icon,
   iconPosition = 'left',
@@ -30,6 +30,7 @@ const Button: React.FC<TButtonProps> = ({
   className,
   href,
   noTextOnMobile,
+  ...props
 }) => {
   const buttonClasses = clsx(
     'flex items-center justify-center rounded-md font-medium transition-all',
@@ -84,7 +85,12 @@ const Button: React.FC<TButtonProps> = ({
   }
 
   return (
-    <button onClick={onClick} disabled={disabled} className={buttonClasses}>
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className={buttonClasses}
+      {...props}
+    >
       {icon && iconPosition === 'left' && <span className="mr-2">{icon}</span>}
       <span className={clsx('block', noTextOnMobile && 'hidden xl:block')}>
         {title}

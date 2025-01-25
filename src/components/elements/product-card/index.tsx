@@ -3,6 +3,7 @@ import Image from 'next/image';
 import React from 'react';
 import Button from '../button';
 import clsx from 'clsx';
+import LocalizedClientLink from '../localized-link';
 
 type TProductCard = {
   id: string;
@@ -16,7 +17,8 @@ const ProductCard = ({ id, title, image, price }: TProductCard) => {
 
   const isAdded = false;
   return (
-    <div
+    <LocalizedClientLink
+      href={`/product/${id}`}
       className="relative xs:max-w-[160px] md:max-w-[320px] xl:max-w-[525px] hover:cursor-pointer flex flex-col justify-between rounded-lg"
       key={id}
     >
@@ -56,7 +58,7 @@ const ProductCard = ({ id, title, image, price }: TProductCard) => {
         <p className="text-xs sm:text-sm">{title}</p>
         <p className="font-medium text-left text-black"> ${price.toFixed(2)}</p>
       </div>
-    </div>
+    </LocalizedClientLink>
   );
 };
 
