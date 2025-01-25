@@ -15,3 +15,11 @@ export const fetchProductsForCollection = async (
 
   return products;
 };
+
+export const fetchSearchProducts = async (
+  queryParams: string,
+  regionId: string
+) => {
+  const url = `/store/products?q=${queryParams}&fields=*variants.calculated_price&region_id=${regionId}`;
+  return fetchAPI(url);
+};

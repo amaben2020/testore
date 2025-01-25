@@ -42,12 +42,14 @@ const Home = async ({
         hasBorder
         title={recommended.title}
         products={recommended.products}
+        collectionId={recommended.products[0].id}
       />
 
       <ProductCardLayout
         hasBorder
         title={latestDrops.title}
         products={latestDrops.products}
+        collectionId={latestDrops.products[0].id}
       />
 
       <ProductCardLayout title="TE STORE" products={products} />

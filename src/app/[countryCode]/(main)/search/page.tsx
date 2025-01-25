@@ -1,12 +1,7 @@
 import React from 'react';
-import { searchProducts } from './action';
-import { fetchAPI } from '@/services/base';
-import { getCategoryByHandle, listCategories } from '@/lib/data/categories';
 
-const fetchProducts = async (queryParams: string) => {
-  const url = `/store/products?q=${queryParams}`;
-  return fetchAPI(url);
-};
+import ProductSortFilterLayout from '@/components/molecules/sort-filter';
+import { fetchSearchProducts } from '@/services/products';
 
 const SearchPage = async ({
   searchParams,
@@ -15,12 +10,7 @@ const SearchPage = async ({
 }) => {
   const { q } = await searchParams;
 
-  const products = await fetchProducts(String(q));
-
-  // const category = await getCategoryByHandle(['watches']);
-  // const listCategory = await listCategories({});
-  // console.log('category', category);
-  // console.log('listCategory', listCategory);
+  const products = await fetchSearchProducts(String(q), '');
 
   if (!products) {
     return <p>Nothing found</p>;
@@ -28,37 +18,12 @@ const SearchPage = async ({
 
   return (
     <div>
-      <form action={searchProducts}>
-        <input type="text" name="q" placeholder="Search products" />
-        <select name="category">
-          <option value="">All Categories</option>
-          <option value="cat_01">Category 1</option>
-          <option value="cat_02">Category 2</option>
-        </select>
-        <input type="number" name="priceMin" placeholder="Min Price" />
-        <input type="number" name="priceMax" placeholder="Max Price" />
-        <select name="sort">
-          <option value="variants.calculated_price">Price (Low to High)</option>
-          <option value="-variants.calculated_price">
-            Price (High to Low)
-          </option>
-        </select>
-        <button type="submit">Search</button>
-      </form>
-      {JSON.stringify(products)}
-      {/* <main>
-       
-        <h1>Search Results</h1>
-        {products?.length > 0 ? (
-          <ul>
-            {products?.map((product: any) => (
-              <li key={product.id}>{product.title}</li>
-            ))}
-          </ul>
-        ) : (
-          <p>No products found.</p>
-        )}
-      </main> */}
+      <ProductSortFilterLayout
+        products={products.products}
+        title={`Search Result${
+          products.products.length > 1 ? 's' : ''
+        } for ${q}`}
+      />
     </div>
   );
 };
