@@ -11,27 +11,6 @@ import { fetchAPI } from '../base';
 //   return response;
 // };
 
-export const createCart = async (): Promise<HttpTypes.StoreCartResponse> => {
-  try {
-    const response = await fetchAPI('/store/carts', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({}), // Add any required body data if needed
-    });
-
-    console.log('API Response:', response);
-
-    console.log('Cart Data:', response);
-
-    return response;
-  } catch (error) {
-    console.error('Error in createCart:', error);
-    throw error; // Re-throw the error to handle it in the calling function
-  }
-};
-
 export const getCart = async (
   cartId: string
 ): Promise<HttpTypes.StoreCartResponse> => {
