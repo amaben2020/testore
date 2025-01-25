@@ -1,7 +1,7 @@
-// import CategoryTemplate from '@/components/organisms/categories/templates';
-// import { SortOptions } from '@/components/molecules/store/components/refinement-list/sort-products';
+import ProductCardLayout from '@/components/layout/product-card-layout';
 import { getCategoryByHandle, listCategories } from '@/lib/data/categories';
 import { listRegions } from '@/lib/data/regions';
+import { fetchAPI } from '@/services/base';
 import { HttpTypes } from '@medusajs/types';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -27,12 +27,12 @@ export async function generateStaticParams() {
   );
 
   const categoryHandles = product_categories.map(
-    (category: any) => category.handle
+    (category: HttpTypes.StoreProductCategory) => category.handle
   );
 
   const staticParams = countryCodes
     ?.map((countryCode: string | undefined) =>
-      categoryHandles.map((handle: any) => ({
+      categoryHandles.map((handle) => ({
         countryCode,
         category: [handle],
       }))
@@ -70,21 +70,29 @@ export default async function CategoryPage(props: Props) {
   const params = await props.params;
   const { sortBy, page } = searchParams;
 
-  const productCategory = await getCategoryByHandle(params.category);
+  const [{ products: categoryProducts }, { products }] = await Promise.all([
+    getCategoryByHandle(params.category),
+    await fetchAPI(`/store/products?fields=*variants.calculated_price`),
+  ]);
 
-  console.log(productCategory);
-
-  if (!productCategory) {
+  if (!categoryProducts) {
     notFound();
   }
 
+  const productsWithCalculatedPrice = categoryProducts.map((product) => {
+    const categoryProduct = products.find(
+      (catProduct: HttpTypes.StoreProduct) => catProduct.id === product.id
+    );
+
+    return categoryProduct;
+  });
+
   return (
-    // <CategoryTemplate
-    //   category={productCategory}
-    //   sortBy={sortBy}
-    //   page={page}
-    //   countryCode={params.countryCode}
-    // />
-    <div>{JSON.stringify(productCategory)}</div>
+    <div>
+      <ProductCardLayout
+        products={productsWithCalculatedPrice}
+        title={params.category[0]}
+      />
+    </div>
   );
 }
