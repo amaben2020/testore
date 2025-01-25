@@ -49,11 +49,18 @@ export const getCollectionByHandle = async (
     ...(await getCacheOptions('collections')),
   };
 
+  console.log('handle===>', handle);
+
   return sdk.client
     .fetch<HttpTypes.StoreCollectionListResponse>(`/store/collections`, {
-      query: { handle, fields: '*products' },
+      query: {
+        handle,
+        fields: '*products,*products.variants',
+      },
       next,
       cache: 'force-cache',
     })
     .then(({ collections }) => collections[0]);
 };
+
+// &fields=*variants.calculated_price,*products

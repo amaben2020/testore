@@ -9,14 +9,12 @@ const ProductCardLayout = ({
   title,
   products,
   hasBorder,
-  collectionId,
 }: {
   title: string;
   products: HttpTypes.StoreProduct[];
   hasBorder?: boolean;
-  collectionId?: string;
 }) => {
-  const collectionUrl = `/category/${collectionId ?? ''}`;
+  const collectionUrl = `/collections/${title ?? ''}`;
 
   return (
     <section className="p-3 m-3 space-y-5 xl:p-6 xl:m-6 ">
@@ -37,15 +35,12 @@ const ProductCardLayout = ({
         )}
       >
         {Array.isArray(products) &&
-          products.map(({ title, thumbnail, id, variants }) => (
+          products.map(({ title, thumbnail, id, variants, price }) => (
             <ProductCard
               title={title}
               image={thumbnail!}
               id={id}
-              price={
-                (variants[0]?.calculated_price?.calculated_amount ??
-                  0) as number
-              }
+              price={variants[0]?.calculated_price?.calculated_amount || 0}
               key={id}
             />
           ))}

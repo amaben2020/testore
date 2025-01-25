@@ -6,20 +6,20 @@ import { sdk } from '../config';
 import medusaError from '../util/medusa-error';
 import { fetchAPI } from '@/services/base';
 
-// export const listRegions = async () => {
-//   const next = {
-//     ...(await getCacheOptions('regions')),
-//   };
+export const listRegions = async () => {
+  const next = {
+    ...(await getCacheOptions('regions')),
+  };
 
-//   return sdk.client
-//     .fetch<{ regions: HttpTypes.StoreRegion[] }>(`/store/regions`, {
-//       method: 'GET',
-//       next,
-//       cache: 'force-cache',
-//     })
-//     .then(({ regions }) => regions)
-//     .catch(medusaError);
-// };
+  return sdk.client
+    .fetch<{ regions: HttpTypes.StoreRegion[] }>(`/store/regions`, {
+      method: 'GET',
+      next,
+      cache: 'force-cache',
+    })
+    .then(({ regions }) => regions)
+    .catch(medusaError);
+};
 
 // export const retrieveRegion = async (id: string) => {
 //   const next = {
@@ -49,8 +49,6 @@ export const getRegion = async (countryCode: string) => {
     if (!regions) {
       return null;
     }
-
-    console.log(regions);
 
     regions.forEach((region: HttpTypes.StoreRegion) => {
       region.countries?.forEach((c) => {

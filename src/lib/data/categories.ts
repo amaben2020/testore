@@ -29,9 +29,9 @@ export const listCategories = async (query?: Record<string, any>) => {
 export const getCategoryByHandle = async (categoryHandle: string[]) => {
   const handle = `${categoryHandle.join('/')}`;
 
-  // const next = {
-  //   ...(await getCacheOptions("categories")),
-  // }
+  const next = {
+    ...(await getCacheOptions('categories')),
+  };
 
   return sdk.client
     .fetch<HttpTypes.StoreProductCategoryListResponse>(
@@ -41,7 +41,7 @@ export const getCategoryByHandle = async (categoryHandle: string[]) => {
           fields: '*category_children, *products',
           handle,
         },
-        // next,
+        next,
         cache: 'force-cache',
       }
     )
