@@ -3,6 +3,7 @@ import { Poppins } from 'next/font/google';
 import './globals.css';
 import Navbar from '../components/molecules/navbar';
 import { MedusaProviderComponent } from 'providers/MedusaProviderComponent';
+import { retrieveCart } from '@/lib/data/cart';
 
 const poppins = Poppins({
   subsets: ['latin'],

@@ -14,6 +14,7 @@ const CartTable = ({ cart }) => {
       // Revalidate cart data
       const updatedCart = await retrieveCart();
       setCartItems(updatedCart.items);
+      window.dispatchEvent(new Event('cartUpdated'));
     });
   };
 
@@ -23,6 +24,7 @@ const CartTable = ({ cart }) => {
       // Revalidate cart data
       const updatedCart = await retrieveCart();
       setCartItems(updatedCart.items);
+      window.dispatchEvent(new Event('cartUpdated'));
     });
   };
 

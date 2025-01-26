@@ -17,28 +17,39 @@ const Navbar = () => {
   const [cartItem, setCartItem] = useState<HttpTypes.StoreCart | null>(null);
   const [isCartDropdownOpen, setIsCartDropdownOpen] = useState(false);
 
-  const cartDropdownRef = useRef(null); // Ref for the dropdown
+  const cartDropdownRef = useRef(null);
 
   const fetchCartItems = async () => {
     const cart = await retrieveCart();
-    setCartItem(cart?.items);
+    setCartItem(cart);
+  };
+
+  // Fetch cart on mount and listen for updates
+  useEffect(() => {
+    fetchCartItems();
+
+    const handleCartUpdate = async () => {
+      await fetchCartItems();
+    };
+
+    // Listen for custom cart update events
+    window.addEventListener('cartUpdated', handleCartUpdate);
+
+    return () => {
+      window.removeEventListener('cartUpdated', handleCartUpdate);
+    };
+  }, []);
+
+  const handleClickOutside = (event) => {
+    if (
+      cartDropdownRef.current &&
+      !cartDropdownRef.current.contains(event.target)
+    ) {
+      setIsCartDropdownOpen(false);
+    }
   };
 
   useEffect(() => {
-    fetchCartItems();
-  }, []);
-
-  // Handle clicks outside the dropdown
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        cartDropdownRef.current &&
-        !cartDropdownRef.current.contains(event.target)
-      ) {
-        setIsCartDropdownOpen(false);
-      }
-    };
-
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
@@ -90,7 +101,7 @@ const Navbar = () => {
             onMouseEnter={() => setIsCartDropdownOpen(true)}
           >
             <Button
-              title={`Cart(${cartItem?.length})`}
+              title={`Cart(${cartItem?.items?.length || 0})`}
               icon={<Image src="/cart.svg" alt="" width={18} height={16} />}
               iconPosition="left"
               shadowStrength="sm"
@@ -98,13 +109,13 @@ const Navbar = () => {
               size="sm"
               href="/cart"
               noTextOnMobile
-              onClick={() => setIsCartDropdownOpen((prev) => !prev)} // Toggle dropdown
+              onClick={() => setIsCartDropdownOpen((prev) => !prev)}
             />
             {isCartDropdownOpen && (
               <CartDropdown
-                cartItems={cartItem}
-                onCartUpdate={fetchCartItems} // Pass fetchCartItems to update the cart
-                onClose={() => setIsCartDropdownOpen(false)} // Allow dropdown to close itself
+                cartItems={cartItem?.items}
+                onCartUpdate={fetchCartItems} // Optional, for direct updates
+                onClose={() => setIsCartDropdownOpen(false)}
               />
             )}
           </div>
