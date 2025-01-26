@@ -99,6 +99,9 @@ const Navbar = () => {
             className="relative"
             ref={cartDropdownRef}
             onMouseEnter={() => setIsCartDropdownOpen(true)}
+            onMouseLeave={() => {
+              if (!cartItem?.items) setIsCartDropdownOpen(false);
+            }}
           >
             <Button
               title={`Cart(${cartItem?.items?.length || 0})`}
@@ -111,12 +114,17 @@ const Navbar = () => {
               noTextOnMobile
               onClick={() => setIsCartDropdownOpen((prev) => !prev)}
             />
-            {isCartDropdownOpen && (
+            {isCartDropdownOpen && cartItem?.items && (
               <CartDropdown
                 cartItems={cartItem?.items}
                 onCartUpdate={fetchCartItems} // Optional, for direct updates
                 onClose={() => setIsCartDropdownOpen(false)}
               />
+            )}
+            {isCartDropdownOpen && !cartItem?.items && (
+              <p className="absolute left-0 text-xs text-red-600 -bottom-7">
+                Please add to cart
+              </p>
             )}
           </div>
         </div>

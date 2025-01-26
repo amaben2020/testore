@@ -10,7 +10,7 @@ const CartDropdown = ({ cartItems, onCartUpdate, onClose }) => {
   const handleIncreaseQuantity = async (lineId, quantity) => {
     try {
       await updateLineItem({ lineId, quantity: quantity + 1 });
-      // onCartUpdate(); // Refresh cart items after updating
+      window.dispatchEvent(new Event('cartUpdated'));
     } catch (error) {
       console.error('Error increasing quantity:', error);
     }
@@ -20,8 +20,10 @@ const CartDropdown = ({ cartItems, onCartUpdate, onClose }) => {
     try {
       if (quantity > 1) {
         await updateLineItem({ lineId, quantity: quantity - 1 });
+        window.dispatchEvent(new Event('cartUpdated'));
       } else {
         await deleteLineItem(lineId);
+        window.dispatchEvent(new Event('cartUpdated'));
       }
       // onCartUpdate(); // Refresh cart items after updating
     } catch (error) {
@@ -32,7 +34,8 @@ const CartDropdown = ({ cartItems, onCartUpdate, onClose }) => {
   const handleRemoveItem = async (lineId) => {
     try {
       await deleteLineItem(lineId);
-      onCartUpdate(); // Refresh cart items after removing
+      onCartUpdate();
+      window.dispatchEvent(new Event('cartUpdated'));
     } catch (error) {
       console.error('Error removing item:', error);
     }
@@ -105,14 +108,14 @@ const CartDropdown = ({ cartItems, onCartUpdate, onClose }) => {
                   (total, item) => total + item.unit_price * item.quantity,
                   0
                 ),
-                currency_code: 'usd', // Replace with dynamic currency
+                currency_code: 'usd', // Replace with dynamic currency based on region
               })}
             </span>
           </p>
           <LocalizedClientLink
             href="/cart"
             className="block w-full py-2 mt-4 text-center text-white bg-black rounded-lg cursor-pointer hover:bg-gray-dark"
-            onClick={onClose} // Close dropdown when navigating to cart
+            onClick={onClose}
           >
             Go to Cart
           </LocalizedClientLink>
