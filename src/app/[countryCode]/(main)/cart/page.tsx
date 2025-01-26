@@ -1,12 +1,24 @@
 import Image from 'next/image';
 import { retrieveCart } from '@/lib/data/cart';
 import Button from '@/components/elements/button';
+import { retrieveCustomer } from '@/lib/data/customer';
+import Banner from '@/components/elements/banner';
 
 const CartPage = async () => {
   const cart = await retrieveCart();
 
+  const customer = await retrieveCustomer();
+
   return (
     <section className="grid">
+      <Banner
+        title="Already have an account?"
+        description="Sign in for a better experience."
+        link={{
+          text: 'Sign in',
+          href: 'account',
+        }}
+      />
       <div className="container p-4 mx-auto">
         <h1 className="mb-6 text-2xl font-bold text-gray-dark">Cart</h1>
 
