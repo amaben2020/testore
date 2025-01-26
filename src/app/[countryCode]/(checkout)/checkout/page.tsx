@@ -18,8 +18,12 @@ export default async function Checkout() {
   const customer = await retrieveCustomer();
 
   return (
-    <div className="grid grid-cols-1 small:grid-cols-[1fr_416px] content-container gap-x-40 py-12">
-      <h1>One last step {customer?.first_name}, Place your order</h1>
+    <div className="grid grid-cols-1 small:grid-cols-[1fr_416px] px-10  gap-x-40 py-7">
+      <h2 className="text-2xl">
+        One last step{' '}
+        <span className="text-gray-dark">{customer?.first_name ?? 'User'}</span>
+        , Place your order
+      </h2>
       <CheckoutSummary cart={cart} />
     </div>
   );
