@@ -1,224 +1,136 @@
-"use client"
+'use client';
 
-import { RadioGroup, Radio } from "@headlessui/react"
-import { setShippingMethod } from "@lib/data/cart"
-import { calculatePriceForShippingOption } from "@lib/data/fulfillment"
-import { convertToLocale } from "@lib/util/money"
-import { CheckCircleSolid, Loader } from "@medusajs/icons"
-import { HttpTypes } from "@medusajs/types"
-import { Button, Heading, Text, clx } from "@medusajs/ui"
-import ErrorMessage from "@modules/checkout/components/error-message"
-import Divider from "@modules/common/components/divider"
-import MedusaRadio from "@modules/common/components/radio"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { useEffect, useState } from "react"
+import Button from '@/components/elements/button';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
-type ShippingProps = {
-  cart: HttpTypes.StoreCart
-  availableShippingMethods: HttpTypes.StoreCartShippingOption[] | null
-}
+export default function Shipping({ cart }) {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-const Shipping: React.FC<ShippingProps> = ({
-  cart,
-  availableShippingMethods,
-}) => {
-  const [isLoading, setIsLoading] = useState(false)
-  const [isLoadingPrices, setIsLoadingPrices] = useState(true)
-  const [calculatedPricesMap, setCalculatedPricesMap] = useState<
-    Record<string, number>
-  >({})
-  const [error, setError] = useState<string | null>(null)
-  const [shippingMethodId, setShippingMethodId] = useState<string | null>(
-    cart.shipping_methods?.at(-1)?.shipping_option_id || null
-  )
+  const handlePayment = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
 
-  const searchParams = useSearchParams()
-  const router = useRouter()
-  const pathname = usePathname()
-
-  const isOpen = searchParams.get("step") === "delivery"
-
-  useEffect(() => {
-    setIsLoadingPrices(true)
-
-    if (availableShippingMethods?.length) {
-      const promises = availableShippingMethods
-        .filter((sm) => sm.price_type === "calculated")
-        .map((sm) => calculatePriceForShippingOption(sm.id, cart.id))
-
-      if (promises.length) {
-        Promise.allSettled(promises).then((res) => {
-          const pricesMap: Record<string, number> = {}
-          res
-            .filter((r) => r.status === "fulfilled")
-            .forEach((p) => (pricesMap[p.value?.id || ""] = p.value?.amount!))
-
-          setCalculatedPricesMap(pricesMap)
-          setIsLoadingPrices(false)
-        })
-      }
+    if (!cart) {
+      setError('Cart not found. Please try again.');
+      return;
     }
-  }, [availableShippingMethods])
 
-  const handleEdit = () => {
-    router.push(pathname + "?step=delivery", { scroll: false })
-  }
+    setLoading(true);
+    setError(null);
 
-  const handleSubmit = () => {
-    router.push(pathname + "?step=payment", { scroll: false })
-  }
+    try {
+      // Step 1: Create a payment collection
+      const paymentCollectionResponse = await fetch(
+        `http://localhost:9000/store/payment-collections`,
+        {
+          credentials: 'include',
+          headers: {
+            'x-publishable-api-key':
+              process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY || 'temp',
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+          body: JSON.stringify({
+            cart_id: cart.id,
+          }),
+        }
+      );
 
-  const handleSetShippingMethod = async (id: string) => {
-    setError(null)
-    let currentId: string | null = null
-    setIsLoading(true)
-    setShippingMethodId((prev) => {
-      currentId = prev
-      return id
-    })
+      const paymentCollectionData = await paymentCollectionResponse.json();
 
-    await setShippingMethod({ cartId: cart.id, shippingMethodId: id })
-      .catch((err) => {
-        setShippingMethodId(currentId)
-        setError(err.message)
-      })
-      .finally(() => {
-        setIsLoading(false)
-      })
-  }
+      if (!paymentCollectionResponse.ok) {
+        throw new Error(
+          paymentCollectionData.message || 'Failed to create payment collection'
+        );
+      }
 
-  useEffect(() => {
-    setError(null)
-  }, [isOpen])
+      const paymentCollectionId = paymentCollectionData.payment_collection.id;
+
+      // Step 2: Create a payment session
+      const paymentSessionResponse = await fetch(
+        `http://localhost:9000/store/payment-collections/${paymentCollectionId}/payment-sessions`,
+        {
+          credentials: 'include',
+          headers: {
+            'x-publishable-api-key':
+              process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY || 'temp',
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+          body: JSON.stringify({ provider_id: 'pp_system_default' }),
+        }
+      );
+
+      const paymentSessionData = await paymentSessionResponse.json();
+
+      if (!paymentSessionResponse.ok) {
+        throw new Error(
+          paymentSessionData.message || 'Failed to create payment session'
+        );
+      }
+
+      // Step 3: Complete the cart
+      const completeResponse = await fetch(
+        `http://localhost:9000/store/carts/${cart.id}/complete`,
+        {
+          credentials: 'include',
+          headers: {
+            'x-publishable-api-key':
+              process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY || 'temp',
+          },
+          method: 'POST',
+        }
+      );
+
+      const completeData = await completeResponse.json();
+
+      if (completeData.type === 'order' && completeData.order) {
+        // Order was successfully created
+        console.log('Order:', completeData.order);
+
+        // Clear the cart manually
+        await fetch(`http://localhost:9000/store/carts/${cart.id}`, {
+          credentials: 'include',
+          headers: {
+            'x-publishable-api-key':
+              process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY || 'temp',
+          },
+          method: 'DELETE',
+        });
+
+        console.log('Cart cleared.');
+
+        // Redirect to order success page
+        router.push(`/order/${completeData.order.id}`);
+      } else if (completeData.type === 'cart' && completeData.cart) {
+        // An error occurred during completion
+        throw new Error(completeData.message || 'Failed to complete cart');
+      }
+    } catch (error) {
+      console.error('Error during payment:', error);
+      setError(
+        error.message || 'An error occurred while processing your payment.'
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="bg-white">
-      <div className="flex flex-row items-center justify-between mb-6">
-        <Heading
-          level="h2"
-          className={clx(
-            "flex flex-row text-3xl-regular gap-x-2 items-baseline",
-            {
-              "opacity-50 pointer-events-none select-none":
-                !isOpen && cart.shipping_methods?.length === 0,
-            }
-          )}
-        >
-          Delivery
-          {!isOpen && (cart.shipping_methods?.length ?? 0) > 0 && (
-            <CheckCircleSolid />
-          )}
-        </Heading>
-        {!isOpen &&
-          cart?.shipping_address &&
-          cart?.billing_address &&
-          cart?.email && (
-            <Text>
-              <button
-                onClick={handleEdit}
-                className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
-                data-testid="edit-delivery-button"
-              >
-                Edit
-              </button>
-            </Text>
-          )}
-      </div>
-      {isOpen ? (
-        <div data-testid="delivery-options-container">
-          <div className="pb-8">
-            <RadioGroup
-              value={shippingMethodId}
-              onChange={handleSetShippingMethod}
-            >
-              {availableShippingMethods?.map((option) => {
-                const isDisabled =
-                  option.price_type === "calculated" &&
-                  !isLoadingPrices &&
-                  typeof calculatedPricesMap[option.id] !== "number"
-
-                return (
-                  <Radio
-                    key={option.id}
-                    value={option.id}
-                    data-testid="delivery-option-radio"
-                    disabled={isDisabled}
-                    className={clx(
-                      "flex items-center justify-between text-small-regular cursor-pointer py-4 border rounded-rounded px-8 mb-2 hover:shadow-borders-interactive-with-active",
-                      {
-                        "border-ui-border-interactive":
-                          option.id === shippingMethodId,
-                        "hover:shadow-brders-none cursor-not-allowed":
-                          isDisabled,
-                      }
-                    )}
-                  >
-                    <div className="flex items-center gap-x-4">
-                      <MedusaRadio checked={option.id === shippingMethodId} />
-                      <span className="text-base-regular">{option.name}</span>
-                    </div>
-                    <span className="justify-self-end text-ui-fg-base">
-                      {option.price_type === "flat" ? (
-                        convertToLocale({
-                          amount: option.amount!,
-                          currency_code: cart?.currency_code,
-                        })
-                      ) : calculatedPricesMap[option.id] ? (
-                        convertToLocale({
-                          amount: calculatedPricesMap[option.id],
-                          currency_code: cart?.currency_code,
-                        })
-                      ) : isLoadingPrices ? (
-                        <Loader />
-                      ) : (
-                        "-"
-                      )}
-                    </span>
-                  </Radio>
-                )
-              })}
-            </RadioGroup>
-          </div>
-
-          <ErrorMessage
-            error={error}
-            data-testid="delivery-option-error-message"
-          />
-
-          <Button
-            size="large"
-            className="mt-6"
-            onClick={handleSubmit}
-            isLoading={isLoading}
-            disabled={!cart.shipping_methods?.[0]}
-            data-testid="submit-delivery-option-button"
-          >
-            Continue to payment
-          </Button>
-        </div>
-      ) : (
-        <div>
-          <div className="text-small-regular">
-            {cart && (cart.shipping_methods?.length ?? 0) > 0 && (
-              <div className="flex flex-col w-1/3">
-                <Text className="txt-medium-plus text-ui-fg-base mb-1">
-                  Method
-                </Text>
-                <Text className="txt-medium text-ui-fg-subtle">
-                  {cart.shipping_methods?.at(-1)?.name}{" "}
-                  {convertToLocale({
-                    amount: cart.shipping_methods.at(-1)?.amount!,
-                    currency_code: cart?.currency_code,
-                  })}
-                </Text>
-              </div>
-            )}
-          </div>
-        </div>
+    <div>
+      <Button
+        onClick={handlePayment}
+        disabled={loading}
+        title={loading ? 'Placing Order...' : 'Place Order'}
+        className="block w-full py-2 mt-4 text-center text-white !bg-black rounded-lg cursor-pointer hover:bg-gray-dark"
+      />
+      {error && (
+        <p className="mt-2 text-sm text-center text-red-500">{error}</p>
       )}
-      <Divider className="mt-8" />
     </div>
-  )
+  );
 }
-
-export default Shipping

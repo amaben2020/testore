@@ -1,10 +1,10 @@
-import React from "react"
+import React from 'react';
 
-import { IconProps } from "types/icon"
+import { IconProps } from '@/types';
 
 const Eye: React.FC<IconProps> = ({
-  size = "20",
-  color = "currentColor",
+  size = '20',
+  color = 'currentColor',
   ...attributes
 }) => {
   return (
@@ -31,7 +31,7 @@ const Eye: React.FC<IconProps> = ({
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default Eye
+export default Eye;

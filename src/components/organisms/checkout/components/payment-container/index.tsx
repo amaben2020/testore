@@ -1,19 +1,17 @@
-import { RadioGroup } from "@headlessui/react"
-import { InformationCircleSolid } from "@medusajs/icons"
-import { Text, Tooltip, clx } from "@medusajs/ui"
-import React, { type JSX } from "react";
+import { RadioGroup } from '@headlessui/react';
 
-import Radio from "@modules/common/components/radio"
+import { Text, clx } from '@medusajs/ui';
+import React, { type JSX } from 'react';
 
-import PaymentTest from "../payment-test"
-import { isManual } from "@lib/constants"
+import PaymentTest from '../payment-test';
+import { isManual } from '@/lib/constants';
 
 type PaymentContainerProps = {
-  paymentProviderId: string
-  selectedPaymentOptionId: string | null
-  disabled?: boolean
-  paymentInfoMap: Record<string, { title: string; icon: JSX.Element }>
-}
+  paymentProviderId: string;
+  selectedPaymentOptionId: string | null;
+  disabled?: boolean;
+  paymentInfoMap: Record<string, { title: string; icon: JSX.Element }>;
+};
 
 const PaymentContainer: React.FC<PaymentContainerProps> = ({
   paymentProviderId,
@@ -21,7 +19,7 @@ const PaymentContainer: React.FC<PaymentContainerProps> = ({
   paymentInfoMap,
   disabled = false,
 }) => {
-  const isDevelopment = process.env.NODE_ENV === "development"
+  const isDevelopment = process.env.NODE_ENV === 'development';
 
   return (
     <>
@@ -30,16 +28,16 @@ const PaymentContainer: React.FC<PaymentContainerProps> = ({
         value={paymentProviderId}
         disabled={disabled}
         className={clx(
-          "flex flex-col gap-y-2 text-small-regular cursor-pointer py-4 border rounded-rounded px-8 mb-2 hover:shadow-borders-interactive-with-active",
+          'flex flex-col gap-y-2 text-small-regular cursor-pointer py-4 border rounded-rounded px-8 mb-2 hover:shadow-borders-interactive-with-active',
           {
-            "border-ui-border-interactive":
+            'border-ui-border-interactive':
               selectedPaymentOptionId === paymentProviderId,
           }
         )}
       >
         <div className="flex items-center justify-between ">
           <div className="flex items-center gap-x-4">
-            <Radio checked={selectedPaymentOptionId === paymentProviderId} />
+            {/* <Radio checked={selectedPaymentOptionId === paymentProviderId} /> */}
             <Text className="text-base-regular">
               {paymentInfoMap[paymentProviderId]?.title || paymentProviderId}
             </Text>
@@ -56,7 +54,7 @@ const PaymentContainer: React.FC<PaymentContainerProps> = ({
         )}
       </RadioGroup.Option>
     </>
-  )
-}
+  );
+};
 
-export default PaymentContainer
+export default PaymentContainer;

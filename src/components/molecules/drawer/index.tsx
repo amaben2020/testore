@@ -29,7 +29,7 @@ const MenuDrawer = ({
         <div className="p-4 bg-white border-b shadow-sm">
           <p className="flex items-center gap-3 text-sm">
             <span className="font-medium ">Your Region:</span>
-            <p className="font-bold uppercase">{countryCode}</p>
+            <span className="font-bold uppercase">{countryCode}</span>
           </p>
         </div>
 

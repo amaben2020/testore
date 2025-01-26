@@ -1,6 +1,7 @@
-"use client"
+'use client';
 
-import { IconBadge, clx } from "@medusajs/ui"
+import ChevronDown from '@/components/icons/chevron-down';
+import { IconBadge, clx } from '@medusajs/ui';
 import {
   SelectHTMLAttributes,
   forwardRef,
@@ -8,33 +9,31 @@ import {
   useImperativeHandle,
   useRef,
   useState,
-} from "react"
-
-import ChevronDown from "@modules/common/icons/chevron-down"
+} from 'react';
 
 type NativeSelectProps = {
-  placeholder?: string
-  errors?: Record<string, unknown>
-  touched?: Record<string, unknown>
-} & Omit<SelectHTMLAttributes<HTMLSelectElement>, "size">
+  placeholder?: string;
+  errors?: Record<string, unknown>;
+  touched?: Record<string, unknown>;
+} & Omit<SelectHTMLAttributes<HTMLSelectElement>, 'size'>;
 
 const CartItemSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
-  ({ placeholder = "Select...", className, children, ...props }, ref) => {
-    const innerRef = useRef<HTMLSelectElement>(null)
-    const [isPlaceholder, setIsPlaceholder] = useState(false)
+  ({ placeholder = 'Select...', className, children, ...props }, ref) => {
+    const innerRef = useRef<HTMLSelectElement>(null);
+    const [isPlaceholder, setIsPlaceholder] = useState(false);
 
     useImperativeHandle<HTMLSelectElement | null, HTMLSelectElement | null>(
       ref,
       () => innerRef.current
-    )
+    );
 
     useEffect(() => {
-      if (innerRef.current && innerRef.current.value === "") {
-        setIsPlaceholder(true)
+      if (innerRef.current && innerRef.current.value === '') {
+        setIsPlaceholder(true);
       } else {
-        setIsPlaceholder(false)
+        setIsPlaceholder(false);
       }
-    }, [innerRef.current?.value])
+    }, [innerRef.current?.value]);
 
     return (
       <div>
@@ -42,32 +41,32 @@ const CartItemSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
           onFocus={() => innerRef.current?.focus()}
           onBlur={() => innerRef.current?.blur()}
           className={clx(
-            "relative flex items-center txt-compact-small border text-ui-fg-base group",
+            'relative flex items-center txt-compact-small border text-ui-fg-base group',
             className,
             {
-              "text-ui-fg-subtle": isPlaceholder,
+              'text-ui-fg-subtle': isPlaceholder,
             }
           )}
         >
           <select
             ref={innerRef}
             {...props}
-            className="appearance-none bg-transparent border-none px-4 transition-colors duration-150 focus:border-gray-700 outline-none w-16 h-16 items-center justify-center"
+            className="items-center justify-center w-16 h-16 px-4 transition-colors duration-150 bg-transparent border-none outline-none appearance-none focus:border-gray-700"
           >
             <option disabled value="">
               {placeholder}
             </option>
             {children}
           </select>
-          <span className="absolute flex pointer-events-none justify-end w-8 group-hover:animate-pulse">
+          <span className="absolute flex justify-end w-8 pointer-events-none group-hover:animate-pulse">
             <ChevronDown />
           </span>
         </IconBadge>
       </div>
-    )
+    );
   }
-)
+);
 
-CartItemSelect.displayName = "CartItemSelect"
+CartItemSelect.displayName = 'CartItemSelect';
 
-export default CartItemSelect
+export default CartItemSelect;

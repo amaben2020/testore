@@ -40,7 +40,10 @@ const ProductCardLayout = ({
               title={title}
               image={thumbnail!}
               id={id}
-              price={variants[0]?.calculated_price?.calculated_amount || 0}
+              price={
+                price || variants[0]?.calculated_price?.calculated_amount || 0
+              }
+              variantId={variants[0]?.id}
               key={id}
             />
           ))}

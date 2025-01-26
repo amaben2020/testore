@@ -1,20 +1,19 @@
-import { Listbox, Transition } from "@headlessui/react"
-import { ChevronUpDown } from "@medusajs/icons"
-import { clx } from "@medusajs/ui"
-import { Fragment, useMemo } from "react"
+import { Listbox, Transition } from '@headlessui/react';
+import { ChevronUpDown } from '@medusajs/icons';
+import { clx } from '@medusajs/ui';
+import { Fragment, useMemo } from 'react';
 
-import Radio from "@modules/common/components/radio"
-import compareAddresses from "@lib/util/compare-addresses"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from '@medusajs/types';
+import compareAddresses from '@/lib/util/compare-addresses';
 
 type AddressSelectProps = {
-  addresses: HttpTypes.StoreCustomerAddress[]
-  addressInput: HttpTypes.StoreCartAddress | null
+  addresses: HttpTypes.StoreCustomerAddress[];
+  addressInput: HttpTypes.StoreCartAddress | null;
   onSelect: (
     address: HttpTypes.StoreCartAddress | undefined,
     email?: string
-  ) => void
-}
+  ) => void;
+};
 
 const AddressSelect = ({
   addresses,
@@ -22,15 +21,15 @@ const AddressSelect = ({
   onSelect,
 }: AddressSelectProps) => {
   const handleSelect = (id: string) => {
-    const savedAddress = addresses.find((a) => a.id === id)
+    const savedAddress = addresses.find((a) => a.id === id);
     if (savedAddress) {
-      onSelect(savedAddress as HttpTypes.StoreCartAddress)
+      onSelect(savedAddress as HttpTypes.StoreCartAddress);
     }
-  }
+  };
 
   const selectedAddress = useMemo(() => {
-    return addresses.find((a) => compareAddresses(a, addressInput))
-  }, [addresses, addressInput])
+    return addresses.find((a) => compareAddresses(a, addressInput));
+  }, [addresses, addressInput]);
 
   return (
     <Listbox onChange={handleSelect} value={selectedAddress?.id}>
@@ -44,11 +43,11 @@ const AddressSelect = ({
               <span className="block truncate">
                 {selectedAddress
                   ? selectedAddress.address_1
-                  : "Choose an address"}
+                  : 'Choose an address'}
               </span>
               <ChevronUpDown
-                className={clx("transition-rotate duration-200", {
-                  "transform rotate-180": open,
+                className={clx('transition-rotate duration-200', {
+                  'transform rotate-180': open,
                 })}
               />
             </>
@@ -61,7 +60,7 @@ const AddressSelect = ({
           leaveTo="opacity-0"
         >
           <Listbox.Options
-            className="absolute z-20 w-full overflow-auto text-small-regular bg-white border border-top-0 max-h-60 focus:outline-none sm:text-sm"
+            className="absolute z-20 w-full overflow-auto bg-white border text-small-regular border-top-0 max-h-60 focus:outline-none sm:text-sm"
             data-testid="shipping-address-options"
           >
             {addresses.map((address) => {
@@ -69,14 +68,14 @@ const AddressSelect = ({
                 <Listbox.Option
                   key={address.id}
                   value={address.id}
-                  className="cursor-default select-none relative pl-6 pr-10 hover:bg-gray-50 py-4"
+                  className="relative py-4 pl-6 pr-10 cursor-default select-none hover:bg-gray-50"
                   data-testid="shipping-address-option"
                 >
-                  <div className="flex gap-x-4 items-start">
-                    <Radio
+                  <div className="flex items-start gap-x-4">
+                    {/* <Radio
                       checked={selectedAddress?.id === address.id}
                       data-testid="shipping-address-radio"
-                    />
+                    /> */}
                     <div className="flex flex-col">
                       <span className="text-left text-base-semi">
                         {address.first_name} {address.last_name}
@@ -86,7 +85,7 @@ const AddressSelect = ({
                           {address.company}
                         </span>
                       )}
-                      <div className="flex flex-col text-left text-base-regular mt-2">
+                      <div className="flex flex-col mt-2 text-left text-base-regular">
                         <span>
                           {address.address_1}
                           {address.address_2 && (
@@ -104,13 +103,13 @@ const AddressSelect = ({
                     </div>
                   </div>
                 </Listbox.Option>
-              )
+              );
             })}
           </Listbox.Options>
         </Transition>
       </div>
     </Listbox>
-  )
-}
+  );
+};
 
-export default AddressSelect
+export default AddressSelect;
