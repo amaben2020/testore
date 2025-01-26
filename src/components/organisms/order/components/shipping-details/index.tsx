@@ -1,17 +1,14 @@
-import { convertToLocale } from "@lib/util/money"
-import { HttpTypes } from "@medusajs/types"
-import { Heading, Text } from "@medusajs/ui"
-
-import Divider from "@modules/common/components/divider"
+import { HttpTypes } from '@medusajs/types';
+import { Heading, Text } from '@medusajs/ui';
 
 type ShippingDetailsProps = {
-  order: HttpTypes.StoreOrder
-}
+  order: HttpTypes.StoreOrder;
+};
 
 const ShippingDetails = ({ order }: ShippingDetailsProps) => {
   return (
     <div>
-      <Heading level="h2" className="flex flex-row text-3xl-regular my-6">
+      <Heading level="h2" className="flex flex-row my-6 text-3xl-regular">
         Delivery
       </Heading>
       <div className="flex items-start gap-x-8">
@@ -19,19 +16,19 @@ const ShippingDetails = ({ order }: ShippingDetailsProps) => {
           className="flex flex-col w-1/3"
           data-testid="shipping-address-summary"
         >
-          <Text className="txt-medium-plus text-ui-fg-base mb-1">
+          <Text className="mb-1 txt-medium-plus text-ui-fg-base">
             Shipping Address
           </Text>
           <Text className="txt-medium text-ui-fg-subtle">
-            {order.shipping_address?.first_name}{" "}
+            {order.shipping_address?.first_name}{' '}
             {order.shipping_address?.last_name}
           </Text>
           <Text className="txt-medium text-ui-fg-subtle">
-            {order.shipping_address?.address_1}{" "}
+            {order.shipping_address?.address_1}{' '}
             {order.shipping_address?.address_2}
           </Text>
           <Text className="txt-medium text-ui-fg-subtle">
-            {order.shipping_address?.postal_code},{" "}
+            {order.shipping_address?.postal_code},{' '}
             {order.shipping_address?.city}
           </Text>
           <Text className="txt-medium text-ui-fg-subtle">
@@ -43,7 +40,7 @@ const ShippingDetails = ({ order }: ShippingDetailsProps) => {
           className="flex flex-col w-1/3 "
           data-testid="shipping-contact-summary"
         >
-          <Text className="txt-medium-plus text-ui-fg-base mb-1">Contact</Text>
+          <Text className="mb-1 txt-medium-plus text-ui-fg-base">Contact</Text>
           <Text className="txt-medium text-ui-fg-subtle">
             {order.shipping_address?.phone}
           </Text>
@@ -54,22 +51,12 @@ const ShippingDetails = ({ order }: ShippingDetailsProps) => {
           className="flex flex-col w-1/3"
           data-testid="shipping-method-summary"
         >
-          <Text className="txt-medium-plus text-ui-fg-base mb-1">Method</Text>
-          <Text className="txt-medium text-ui-fg-subtle">
-            {(order as any).shipping_methods[0]?.name} (
-            {convertToLocale({
-              amount: order.shipping_methods?.[0].total ?? 0,
-              currency_code: order.currency_code,
-            })
-              .replace(/,/g, "")
-              .replace(/\./g, ",")}
-            )
-          </Text>
+          <Text className="mb-1 txt-medium-plus text-ui-fg-base">Method</Text>
         </div>
       </div>
-      <Divider className="mt-8" />
+      <br className="mt-8" />
     </div>
-  )
-}
+  );
+};
 
-export default ShippingDetails
+export default ShippingDetails;

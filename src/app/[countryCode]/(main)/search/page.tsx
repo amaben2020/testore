@@ -2,6 +2,7 @@ import React from 'react';
 
 import ProductSortFilterLayout from '@/components/molecules/sort-filter';
 import { fetchSearchProducts } from '@/services/products';
+import CollectionWithPagination from '@/components/organisms/product-category';
 
 const SearchPage = async ({
   searchParams,
@@ -18,7 +19,7 @@ const SearchPage = async ({
 
   return (
     <div>
-      <ProductSortFilterLayout
+      <CollectionWithPagination
         products={products.products}
         title={`Search Result${
           products.products.length > 1 ? 's' : ''

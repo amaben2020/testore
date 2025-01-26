@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 import { HttpTypes } from '@medusajs/types';
 import { convertToLocale } from '@/lib/util/money';
 import Image from 'next/image';
+import LocalizedClientLink from '@/components/elements/localized-link';
 
 type OrderCardProps = {
   order: HttpTypes.StoreOrder;

@@ -2,26 +2,25 @@
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useState } from 'react';
-
 import ProductCardLayout from '@/components/layout/product-card-layout';
 import { HttpTypes } from '@medusajs/types';
 
 type Props = {
-  collection: HttpTypes.StoreCollection;
   products: HttpTypes.StoreProduct[];
   title: string;
   initialSortBy?: string;
   initialPage?: number;
+  hideSeeAll?: boolean;
 };
 
-const PRODUCT_LIMIT = 12;
+const PRODUCT_LIMIT = 3;
 
 export default function CollectionWithPagination({
-  collection,
   products,
   title,
   initialSortBy = 'created_at',
   initialPage = 1,
+  hideSeeAll = true,
 }: Props) {
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [sortBy, setSortBy] = useState(initialSortBy);
@@ -31,44 +30,63 @@ export default function CollectionWithPagination({
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
+  // Create query string for URL updates
   const createQueryString = useCallback(
     (name: string, value: string) => {
       const params = new URLSearchParams(searchParams);
       params.set(name, value);
-
       return params.toString();
     },
     [searchParams]
   );
 
+  // Handle page change
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
     const query = createQueryString('page', newPage.toString());
     router.push(`${pathname}?${query}`);
+    scrollToTop(); // Smooth scroll to the top
   };
 
+  // Handle sort change
   const handleSortChange = (newSort: string) => {
     setSortBy(newSort);
     const query = createQueryString('sortBy', newSort);
     router.push(`${pathname}?${query}`);
+    scrollToTop(); // Smooth scroll to the top
   };
 
+  // Handle items per page change
   const handleItemsPerPageChange = (newLimit: number) => {
     setItemsPerPage(newLimit);
     setCurrentPage(1); // Reset to first page
     const query = createQueryString('limit', newLimit.toString());
     router.push(`${pathname}?${query}`);
+    scrollToTop(); // Smooth scroll to the top
   };
 
+  // Smooth scroll to the top of the page
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
+
+  // Calculate max page number
   const maxPage = Math.ceil(products.length / itemsPerPage);
 
+  // Sort and paginate products
   const paginatedProducts = products
     .sort((a, b) => {
+      const priceA = a.variants[0]?.calculated_price.calculated_amount || 0;
+      const priceB = b.variants[0]?.calculated_price.calculated_amount || 0;
+
       if (sortBy === 'price_low') {
-        return a.variants[0].calculated_price - b.variants[0].calculated_price;
+        return priceA - priceB;
       }
       if (sortBy === 'price_high') {
-        return b.variants[0].calculated_price - a.variants[0].calculated_price;
+        return priceB - priceA;
       }
       return (
         new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
@@ -78,14 +96,16 @@ export default function CollectionWithPagination({
 
   return (
     <div className="flex flex-col items-center py-6 content-container">
-      <h1 className="text-2xl font-bold mb-6">{title}</h1>
+      <h1 className="mb-6 text-2xl font-bold capitalize">{title}</h1>
 
-      <div className="flex justify-between w-full mb-4">
+      {/* Sort and Items Per Page Controls */}
+      <div className="flex items-center gap-3 mb-4">
         {/* Sort Dropdown */}
+        <p className="text-xl font-semibold text-gray-dark">Sort by: </p>
         <select
           value={sortBy}
           onChange={(e) => handleSortChange(e.target.value)}
-          className="border rounded px-4 py-2"
+          className="px-4 py-2 border rounded"
         >
           <option value="created_at">Newest</option>
           <option value="price_low">Price: Low to High</option>
@@ -96,21 +116,23 @@ export default function CollectionWithPagination({
         <select
           value={itemsPerPage}
           onChange={(e) => handleItemsPerPageChange(parseInt(e.target.value))}
-          className="border rounded px-4 py-2"
+          className="px-4 py-2 border rounded"
         >
-          <option value={12}>12 per page</option>
-          <option value={24}>24 per page</option>
-          <option value={48}>48 per page</option>
+          <option value={3}>3 per page</option>
+          <option value={6}>6 per page</option>
+          <option value={9}>9 per page</option>
         </select>
       </div>
 
+      {/* Product Card Layout */}
       <ProductCardLayout
         products={paginatedProducts}
-        title={collection.title}
+        title=""
+        hideSeeAll={hideSeeAll}
       />
 
       {/* Pagination Controls */}
-      <div className="flex justify-center items-center mt-6 gap-4">
+      <div className="flex items-center justify-center gap-2 mt-2">
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}

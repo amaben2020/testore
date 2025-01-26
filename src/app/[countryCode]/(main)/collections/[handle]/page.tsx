@@ -1,6 +1,6 @@
-// import CollectionTemplate from '@/components/molecules/collections/templates';
+import CollectionTemplate from '@/components/molecules/collections/templates';
 import ProductCardLayout from '@/components/layout/product-card-layout';
-// import CollectionWithPagination from '@/components/organisms/product-category';
+import CollectionWithPagination from '@/components/organisms/product-category';
 import { getCollectionByHandle, listCollections } from '@/lib/data/collections';
 import { listRegions } from '@/lib/data/regions';
 import { fetchAPI } from '@/services/base';
@@ -92,16 +92,10 @@ export default async function CollectionPage(props: Props) {
 
   return (
     <div>
-      <ProductCardLayout
+      <CollectionWithPagination
         products={productsWithPrice}
         title={collection.title}
       />
-
-      {/* <CollectionWithPagination
-        products={productsWithPrice}
-        title={collection.title}
-        collection={collection}
-      /> */}
     </div>
   );
 }
