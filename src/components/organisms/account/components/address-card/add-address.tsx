@@ -1,50 +1,49 @@
-"use client"
+'use client';
 
-import { Plus } from "@medusajs/icons"
-import { Button, Heading } from "@medusajs/ui"
-import { useEffect, useState, useActionState } from "react"
+import { Plus } from '@medusajs/icons';
+import { Button, Heading, useToggleState } from '@medusajs/ui';
+import { useEffect, useState, useActionState } from 'react';
 
-import useToggleState from "@lib/hooks/use-toggle-state"
-import CountrySelect from "@modules/checkout/components/country-select"
-import Input from "@modules/common/components/input"
-import Modal from "@modules/common/components/modal"
-import { SubmitButton } from "@modules/checkout/components/submit-button"
-import { HttpTypes } from "@medusajs/types"
-import { addCustomerAddress } from "@lib/data/customer"
+import { HttpTypes } from '@medusajs/types';
+import { addCustomerAddress } from '@/lib/data/customer';
+import { SubmitButton } from '@/components/organisms/checkout/components/submit-button';
+import { Dialog } from '@headlessui/react';
+import Input from '@/components/elements/input';
+import CountrySelect from '@/components/organisms/checkout/components/country-select';
 
 const AddAddress = ({
   region,
   addresses,
 }: {
-  region: HttpTypes.StoreRegion
-  addresses: HttpTypes.StoreCustomerAddress[]
+  region: HttpTypes.StoreRegion;
+  addresses: HttpTypes.StoreCustomerAddress[];
 }) => {
-  const [successState, setSuccessState] = useState(false)
-  const { state, open, close: closeModal } = useToggleState(false)
+  const [successState, setSuccessState] = useState(false);
+  const { state, open, close: closeModal } = useToggleState(false);
 
   const [formState, formAction] = useActionState(addCustomerAddress, {
     isDefaultShipping: addresses.length === 0,
     success: false,
     error: null,
-  })
+  });
 
   const close = () => {
-    setSuccessState(false)
-    closeModal()
-  }
+    setSuccessState(false);
+    closeModal();
+  };
 
   useEffect(() => {
     if (successState) {
-      close()
+      close();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [successState])
+  }, [successState]);
 
   useEffect(() => {
     if (formState.success) {
-      setSuccessState(true)
+      setSuccessState(true);
     }
-  }, [formState])
+  }, [formState]);
 
   return (
     <>
@@ -57,12 +56,12 @@ const AddAddress = ({
         <Plus />
       </button>
 
-      <Modal isOpen={state} close={close} data-testid="add-address-modal">
-        <Modal.Title>
+      <Dialog open={state} onClose={close} data-testid="add-address-modal">
+        <Dialog.Title>
           <Heading className="mb-2">Add address</Heading>
-        </Modal.Title>
+        </Dialog.Title>
         <form action={formAction}>
-          <Modal.Body>
+          <div>
             <div className="flex flex-col gap-y-2">
               <div className="grid grid-cols-2 gap-x-2">
                 <Input
@@ -137,14 +136,14 @@ const AddAddress = ({
             </div>
             {formState.error && (
               <div
-                className="text-rose-500 text-small-regular py-2"
+                className="py-2 text-rose-500 text-small-regular"
                 data-testid="address-error"
               >
                 {formState.error}
               </div>
             )}
-          </Modal.Body>
-          <Modal.Footer>
+          </div>
+          <footer>
             <div className="flex gap-3 mt-6">
               <Button
                 type="reset"
@@ -157,11 +156,11 @@ const AddAddress = ({
               </Button>
               <SubmitButton data-testid="save-button">Save</SubmitButton>
             </div>
-          </Modal.Footer>
+          </footer>
         </form>
-      </Modal>
+      </Dialog>
     </>
-  )
-}
+  );
+};
 
-export default AddAddress
+export default AddAddress;

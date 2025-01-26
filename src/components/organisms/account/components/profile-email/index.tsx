@@ -1,19 +1,18 @@
-"use client"
+'use client';
 
-import React, { useEffect, useActionState } from "react";
+import React, { useEffect, useActionState } from 'react';
 
-import Input from "@modules/common/components/input"
-
-import AccountInfo from "../account-info"
-import { HttpTypes } from "@medusajs/types"
+import AccountInfo from '../account-info';
+import { HttpTypes } from '@medusajs/types';
+import Input from '@/components/elements/input';
 // import { updateCustomer } from "@lib/data/customer"
 
 type MyInformationProps = {
-  customer: HttpTypes.StoreCustomer
-}
+  customer: HttpTypes.StoreCustomer;
+};
 
 const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
-  const [successState, setSuccessState] = React.useState(false)
+  const [successState, setSuccessState] = React.useState(false);
 
   // TODO: It seems we don't support updating emails now?
   const updateCustomerEmail = (
@@ -21,29 +20,29 @@ const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
     formData: FormData
   ) => {
     const customer = {
-      email: formData.get("email") as string,
-    }
+      email: formData.get('email') as string,
+    };
 
     try {
       // await updateCustomer(customer)
-      return { success: true, error: null }
+      return { success: true, error: null };
     } catch (error: any) {
-      return { success: false, error: error.toString() }
+      return { success: false, error: error.toString() };
     }
-  }
+  };
 
   const [state, formAction] = useActionState(updateCustomerEmail, {
     error: false,
     success: false,
-  })
+  });
 
   const clearState = () => {
-    setSuccessState(false)
-  }
+    setSuccessState(false);
+  };
 
   useEffect(() => {
-    setSuccessState(state.success)
-  }, [state])
+    setSuccessState(state.success);
+  }, [state]);
 
   return (
     <form action={formAction} className="w-full">
@@ -69,7 +68,7 @@ const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
         </div>
       </AccountInfo>
     </form>
-  )
-}
+  );
+};
 
-export default ProfileEmail
+export default ProfileEmail;
