@@ -3,9 +3,10 @@ import Button from '@/components/elements/button';
 import Image from 'next/image';
 import 'react-modern-drawer/dist/index.css';
 import MenuDrawer from '../drawer';
+
 import useToggle from '@/hooks/useToggle';
-import SearchModal from '../search-modal';
 import LocalizedClientLink from '@/components/elements/localized-link';
+import SearchModal from '../search-modal';
 
 const Navbar = () => {
   const { toggle: toggleDrawer, isOpen } = useToggle();

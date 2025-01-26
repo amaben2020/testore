@@ -11,7 +11,7 @@ const Banner = ({
 }) => {
   return (
     <div className="px-6 py-4 text-white bg-gradient-to-r from-gray-light to-gray-dark">
-      <div className="container flex items-center justify-between mx-auto">
+      <div className="container flex flex-col items-center justify-between mx-auto md:flex-row gap-y-5">
         <h3 className="text-lg font-semibold text-gray-dark">{title}</h3>
         <p className="text-lg font-semibold text-gray-light">{description}</p>
         <Button href={link.href} title={link.text} />

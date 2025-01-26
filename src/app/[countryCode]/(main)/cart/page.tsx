@@ -11,14 +11,16 @@ const CartPage = async () => {
 
   return (
     <section className="grid">
-      <Banner
-        title="Already have an account?"
-        description="Sign in for a better experience."
-        link={{
-          text: 'Sign in',
-          href: 'account',
-        }}
-      />
+      {!customer && (
+        <Banner
+          title="Already have an account?"
+          description="Sign in for a better experience."
+          link={{
+            text: 'Sign in',
+            href: 'account',
+          }}
+        />
+      )}
       <div className="container p-4 mx-auto">
         <h1 className="mb-6 text-2xl font-bold text-gray-dark">Cart</h1>
 
