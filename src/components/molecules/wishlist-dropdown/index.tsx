@@ -3,6 +3,7 @@ import React from 'react';
 import Image from 'next/image';
 import LocalizedClientLink from '@/components/elements/localized-link';
 import { useWishlist } from 'providers/WishlistProvider';
+import Trash from '@/components/icons/trash';
 
 const WishlistDropdown = ({ onClose }: { onClose: () => void }) => {
   const { wishlist, removeFromWishlist } = useWishlist();
@@ -31,7 +32,7 @@ const WishlistDropdown = ({ onClose }: { onClose: () => void }) => {
                   onClick={() => removeFromWishlist(item.id)}
                   className="text-sm text-red-500 hover:underline"
                 >
-                  Remove
+                  <Trash />
                 </button>
               </div>
             ))}

@@ -6,6 +6,7 @@ import LocalizedClientLink from '@/components/elements/localized-link';
 import { convertToLocale } from '@/lib/util/money';
 import { updateLineItem, deleteLineItem } from '@/lib/data/cart';
 import { HttpTypes } from '@medusajs/types';
+import Trash from '@/components/icons/trash';
 
 const CartDropdown = ({
   cartItems,
@@ -99,7 +100,7 @@ const CartDropdown = ({
                     onClick={() => handleRemoveItem(item.id)}
                     className="text-sm text-red-500 hover:text-red-700"
                   >
-                    Remove
+                    <Trash />
                   </button>
                 </div>
               </div>

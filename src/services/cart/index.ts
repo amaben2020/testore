@@ -1,16 +1,6 @@
 import { HttpTypes } from '@medusajs/types';
 import { fetchAPI } from '../base';
 
-// export const createCart = async (): Promise<HttpTypes.StoreCartResponse> => {
-//   const response = await fetchAPI('/store/carts', {
-//     method: 'POST',
-//   });
-
-//   console.log('resp===>', response);
-
-//   return response;
-// };
-
 export const getCart = async (
   cartId: string
 ): Promise<HttpTypes.StoreCartResponse> => {
