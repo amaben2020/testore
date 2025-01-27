@@ -6,11 +6,18 @@ import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { PaystackButton } from 'react-paystack';
 
-export default function Shipping({ cart }: { cart: HttpTypes.StoreCart }) {
+export default function PaymentAndShipping({
+  cart,
+}: {
+  cart: HttpTypes.StoreCart;
+}) {
   const [loading, setLoading] = useState(false);
   const [customer, setCustomer] = useState<
     HttpTypes.StoreCustomerResponse['customer'] | null
   >();
+  const router = useRouter();
+
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     setLoading(true);
@@ -28,12 +35,12 @@ export default function Shipping({ cart }: { cart: HttpTypes.StoreCart }) {
     handleGetCustomer();
   }, []);
 
-  const router = useRouter();
-
-  const [error, setError] = useState<string | null>(null);
-
   if (loading) {
     return <p>Loading...</p>;
+  }
+
+  if (typeof window === 'undefined') {
+    return null;
   }
 
   const handleSuccess = async () => {
@@ -54,8 +61,6 @@ export default function Shipping({ cart }: { cart: HttpTypes.StoreCart }) {
       const completeData = await completeResponse.json();
 
       if (completeData.type === 'order' && completeData.order) {
-        console.log('Order:', completeData.order);
-
         // Clear the cart manually
         await fetch(`http://localhost:9000/store/carts/${cart.id}`, {
           credentials: 'include',

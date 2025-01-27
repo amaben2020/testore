@@ -1,3 +1,4 @@
+import Banner from '@/components/elements/banner';
 import CheckoutSummary from '@/components/organisms/checkout/templates/checkout-summary';
 import { retrieveCart } from '@/lib/data/cart';
 import { retrieveCustomer } from '@/lib/data/customer';
@@ -9,20 +10,27 @@ export const metadata: Metadata = {
 };
 
 export default async function Checkout() {
-  const cart = await retrieveCart();
   const customer = await retrieveCustomer();
+  const cart = await retrieveCart();
 
   if (!cart) {
     return notFound();
   }
 
   return (
-    <div className="grid grid-cols-1 small:grid-cols-[1fr_416px] px-10  gap-x-40 py-7">
-      <h2 className="text-2xl">
-        One last step{' '}
-        <span className="text-gray-dark">{customer?.first_name ?? 'User'}</span>
-        , Place your order
-      </h2>
+    <div
+      className="grid grid-cols-1 small:grid-cols-[1fr_416px] px-10  gap-x-40 py-7"
+      suppressHydrationWarning
+    >
+      <Banner
+        title={`Hey 👋🏾, ${customer?.first_name ?? 'User'}`}
+        description="One last step, make payment"
+        link={{
+          href: '/account',
+          text: 'Sign in',
+        }}
+      />
+
       <CheckoutSummary cart={cart} />
     </div>
   );
