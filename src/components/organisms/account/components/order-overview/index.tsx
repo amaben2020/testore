@@ -1,9 +1,7 @@
 'use client';
 
 import { Button } from '@medusajs/ui';
-
 import OrderCard from '../order-card';
-
 import { HttpTypes } from '@medusajs/types';
 import LocalizedClientLink from '@/components/elements/localized-link';
 

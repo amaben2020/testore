@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
 import './globals.css';
-import { MedusaProviderComponent } from 'providers/MedusaProviderComponent';
 import { WishlistProvider } from 'providers/WishlistProvider';
 
 const poppins = Poppins({
@@ -24,11 +23,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={poppins.variable}>
-        <WishlistProvider>
-          <MedusaProviderComponent>
-            <main>{children}</main>
-          </MedusaProviderComponent>
-        </WishlistProvider>
+        <main>
+          <WishlistProvider>{children}</WishlistProvider>
+        </main>
       </body>
     </html>
   );

@@ -19,6 +19,7 @@ import medusaError from '../util/medusa-error';
  * @param cartId - optional - The ID of the cart to retrieve.
  * @returns The cart object if found, or null if not found.
  */
+
 export async function retrieveCart(cartId?: string) {
   const id = cartId || (await getCartId());
 

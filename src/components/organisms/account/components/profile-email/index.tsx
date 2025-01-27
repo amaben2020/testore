@@ -5,7 +5,6 @@ import React, { useEffect, useActionState } from 'react';
 import AccountInfo from '../account-info';
 import { HttpTypes } from '@medusajs/types';
 import Input from '@/components/elements/input';
-// import { updateCustomer } from "@lib/data/customer"
 
 type MyInformationProps = {
   customer: HttpTypes.StoreCustomer;
@@ -24,7 +23,6 @@ const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
     };
 
     try {
-      // await updateCustomer(customer)
       return { success: true, error: null };
     } catch (error: any) {
       return { success: false, error: error.toString() };

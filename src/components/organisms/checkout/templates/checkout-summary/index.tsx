@@ -1,8 +1,9 @@
 import Image from 'next/image';
 import LocalizedClientLink from '@/components/elements/localized-link';
 import Shipping from '../../components/shipping';
+import { HttpTypes } from '@medusajs/types';
 
-const CheckoutSummary = ({ cart }) => {
+const CheckoutSummary = ({ cart }: { cart: HttpTypes.StoreCart }) => {
   if (!cart.items || cart.items.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-screen p-4">
@@ -32,7 +33,7 @@ const CheckoutSummary = ({ cart }) => {
                 {/* Product Image */}
                 <div className="flex items-center w-full sm:w-auto">
                   <Image
-                    src={item.thumbnail}
+                    src={item.thumbnail!}
                     alt={item.title}
                     width={100}
                     height={100}

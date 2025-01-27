@@ -29,6 +29,7 @@
     "react-autosuggest": "^10.1.0",
     "react-dom": "^19.0.0",
     "react-modern-drawer": "^1.4.0",
+    "react-paystack": "^6.0.0",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-radix": "^3.0.5"
   },

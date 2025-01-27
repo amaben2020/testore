@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 const useToggle = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const toggleDrawer = () => {
     setIsOpen((prevState) => !prevState);
   };

@@ -52,7 +52,7 @@ const AccountNav = ({
                   >
                     <>
                       <div className="flex items-center gap-x-2">
-                        <User size={20} />
+                        <User size="20" />
                         <span>Profile</span>
                       </div>
                       <ChevronDown className="transform -rotate-90" />
@@ -67,7 +67,7 @@ const AccountNav = ({
                   >
                     <>
                       <div className="flex items-center gap-x-2">
-                        <MapPin size={20} />
+                        <MapPin size="20" />
                         <span>Addresses</span>
                       </div>
                       <ChevronDown className="transform -rotate-90" />
@@ -81,7 +81,7 @@ const AccountNav = ({
                     data-testid="orders-link"
                   >
                     <div className="flex items-center gap-x-2">
-                      <Package size={20} />
+                      <Package size="20" />
                       <span>Orders</span>
                     </div>
                     <ChevronDown className="transform -rotate-90" />

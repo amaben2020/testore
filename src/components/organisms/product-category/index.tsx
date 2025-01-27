@@ -89,8 +89,8 @@ export default function CollectionWithPagination({
   // Sort and paginate products (client-side)
   const paginatedProducts = products
     .sort((a, b) => {
-      const priceA = a.variants[0]?.calculated_price.calculated_amount || 0;
-      const priceB = b.variants[0]?.calculated_price.calculated_amount || 0;
+      const priceA = a.variants?.[0]?.calculated_price?.calculated_amount ?? 0;
+      const priceB = b.variants?.[0]?.calculated_price?.calculated_amount ?? 0;
 
       if (sortBy === 'price_low') {
         return priceA - priceB;
@@ -98,10 +98,10 @@ export default function CollectionWithPagination({
       if (sortBy === 'price_high') {
         return priceB - priceA;
       }
-      // Default to "Newest" (created_at)
-      return (
-        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-      );
+      const createdAtA = a.created_at ? new Date(a.created_at).getTime() : 0;
+      const createdAtB = b.created_at ? new Date(b.created_at).getTime() : 0;
+
+      return createdAtB - createdAtA;
     })
     .slice(offset, offset + itemsPerPage);
 

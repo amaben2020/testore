@@ -1,79 +1,44 @@
 'use client';
 
-import Button from '@/components/elements/button';
+import { retrieveCustomer } from '@/lib/data/customer';
+import { HttpTypes } from '@medusajs/types';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { PaystackButton } from 'react-paystack';
 
-export default function Shipping({ cart }) {
-  const router = useRouter();
+export default function Shipping({ cart }: { cart: HttpTypes.StoreCart }) {
   const [loading, setLoading] = useState(false);
+  const [customer, setCustomer] = useState<
+    HttpTypes.StoreCustomerResponse['customer'] | null
+  >();
+
+  useEffect(() => {
+    setLoading(true);
+    const handleGetCustomer = async () => {
+      try {
+        const customer = await retrieveCustomer();
+
+        setCustomer(customer);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    handleGetCustomer();
+  }, []);
+
+  const router = useRouter();
+
   const [error, setError] = useState<string | null>(null);
 
-  const handlePayment = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    e.preventDefault();
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
-    if (!cart) {
-      setError('Cart not found. Please try again.');
-      return;
-    }
-
-    setLoading(true);
-    setError(null);
-
+  const handleSuccess = async () => {
     try {
-      // Step 1: Create a payment collection
-      const paymentCollectionResponse = await fetch(
-        `http://localhost:9000/store/payment-collections`,
-        {
-          credentials: 'include',
-          headers: {
-            'x-publishable-api-key':
-              process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY || 'temp',
-            'Content-Type': 'application/json',
-          },
-          method: 'POST',
-          body: JSON.stringify({
-            cart_id: cart.id,
-          }),
-        }
-      );
-
-      const paymentCollectionData = await paymentCollectionResponse.json();
-
-      if (!paymentCollectionResponse.ok) {
-        throw new Error(
-          paymentCollectionData.message || 'Failed to create payment collection'
-        );
-      }
-
-      const paymentCollectionId = paymentCollectionData.payment_collection.id;
-
-      // Step 2: Create a payment session
-      const paymentSessionResponse = await fetch(
-        `http://localhost:9000/store/payment-collections/${paymentCollectionId}/payment-sessions`,
-        {
-          credentials: 'include',
-          headers: {
-            'x-publishable-api-key':
-              process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY || 'temp',
-            'Content-Type': 'application/json',
-          },
-          method: 'POST',
-          body: JSON.stringify({ provider_id: 'pp_system_default' }),
-        }
-      );
-
-      const paymentSessionData = await paymentSessionResponse.json();
-
-      if (!paymentSessionResponse.ok) {
-        throw new Error(
-          paymentSessionData.message || 'Failed to create payment session'
-        );
-      }
-
-      // Step 3: Complete the cart
+      // Complete the cart
       const completeResponse = await fetch(
         `http://localhost:9000/store/carts/${cart.id}/complete`,
         {
@@ -89,7 +54,6 @@ export default function Shipping({ cart }) {
       const completeData = await completeResponse.json();
 
       if (completeData.type === 'order' && completeData.order) {
-        // Order was successfully created
         console.log('Order:', completeData.order);
 
         // Clear the cart manually
@@ -102,31 +66,43 @@ export default function Shipping({ cart }) {
           method: 'DELETE',
         });
 
-        console.log('Cart cleared.');
-
-        // Redirect to order success page
         router.push(`/order/${completeData.order.id}`);
-      } else if (completeData.type === 'cart' && completeData.cart) {
-        // An error occurred during completion
+      } else {
         throw new Error(completeData.message || 'Failed to complete cart');
       }
     } catch (error) {
-      console.error('Error during payment:', error);
-      setError(
-        error.message || 'An error occurred while processing your payment.'
-      );
-    } finally {
-      setLoading(false);
+      console.error('Error completing cart:', error);
+
+      if (error instanceof Error)
+        setError(
+          error.message || 'An error occurred while completing your order.'
+        );
     }
   };
 
+  const CURRENT_DOLLAR_RATE = 1700;
+
+  const publicKey = process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY || '';
+  const amount = cart?.total * CURRENT_DOLLAR_RATE || 0;
+  const email = cart?.email ?? customer?.email ?? 'uzochukwubenamara@gmail.com'; // the last one shouldn't happen
+  const currency =
+    cart?.region?.currency_code?.toUpperCase() !== 'NGN'
+      ? 'NGN'
+      : cart?.region?.currency_code?.toUpperCase();
+  const reference = `ref_${Date.now()}`;
+
   return (
     <div>
-      <Button
-        onClick={handlePayment}
-        disabled={loading}
-        title={loading ? 'Placing Order...' : 'Place Order'}
-        className="block w-full py-2 mt-4 text-center text-white !bg-black rounded-lg cursor-pointer hover:bg-gray-dark"
+      <PaystackButton
+        publicKey={publicKey}
+        amount={amount}
+        email={email}
+        currency={currency}
+        reference={reference}
+        text="Pay with Paystack 🇳🇬"
+        onSuccess={handleSuccess}
+        onClose={() => console.log('Payment closed')}
+        className="block w-full py-2 mt-4 text-center text-white bg-black rounded-lg hover:bg-gray-dark"
       />
       {error && (
         <p className="mt-2 text-sm text-center text-red-500">{error}</p>

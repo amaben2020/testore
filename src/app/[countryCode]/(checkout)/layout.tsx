@@ -1,4 +1,6 @@
+import LocalizedClientLink from '@/components/elements/localized-link';
 import CTA from '@/components/molecules/cta';
+import Image from 'next/image';
 
 export default function CheckoutLayout({
   children,
@@ -6,10 +8,20 @@ export default function CheckoutLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="relative w-full bg-white small:min-h-screen">
-      {children}
-
-      <CTA />
-    </div>
+    <>
+      <LocalizedClientLink href="/" className="text-white rounded-lg">
+        <Image
+          alt=""
+          src="/testore.svg"
+          width={200}
+          height={200}
+          className="px-5 py-3 mt-4 lg:py-6 lg:px-10"
+        />
+      </LocalizedClientLink>
+      <section>
+        {children}
+        <CTA />
+      </section>
+    </>
   );
 }
