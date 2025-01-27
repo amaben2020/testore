@@ -2,7 +2,6 @@ import { HttpTypes } from '@medusajs/types';
 import { fetchAPI } from '../base';
 import { getRegion } from '@/lib/data/regions';
 
-// Fetch products for each collection
 export const fetchProductsForCollection = async (
   collectionId: string,
   regionId: string,
@@ -68,5 +67,3 @@ export const fetchProductsCollection = async (
 
   return products;
 };
-
-// http://localhost:9000/store/products?limit=3&offset=0&fields=*variants.calculated_price&region_id=reg_01JJ6XBW7EVM3N8RSQV8ZXT5XQ

@@ -59,7 +59,7 @@ const ProductCard = ({ id, title, image, price, variantId }: TProductCard) => {
       window.dispatchEvent(new Event('cartUpdated'));
       setIsAdded(true);
     } catch (err) {
-      setError(err.message);
+      if (err instanceof Error) setError(err.message);
       console.error('Error adding to cart:', err);
     } finally {
       setIsLoading(false);
@@ -128,7 +128,7 @@ const ProductCard = ({ id, title, image, price, variantId }: TProductCard) => {
 
       {/* Text & Price */}
       <div className="flex items-center justify-between pt-4 mt-auto">
-        <p className="text-xs sm:text-sm">{title}</p>
+        <p className="w-9/12 text-xs truncate text-wrap sm:text-sm">{title}</p>
         <p className="font-medium text-left text-black">${price.toFixed(2)}</p>
       </div>
     </LocalizedClientLink>

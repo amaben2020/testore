@@ -1,10 +1,6 @@
-// todo: remove component
-import CollectionTemplate from '@/components/molecules/collections/templates';
-import ProductCardLayout from '@/components/layout/product-card-layout';
 import CollectionWithPagination from '@/components/organisms/product-category';
 import { getCollectionByHandle, listCollections } from '@/lib/data/collections';
 import { listRegions } from '@/lib/data/regions';
-import { fetchAPI } from '@/services/base';
 import { HttpTypes } from '@medusajs/types';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -72,6 +68,9 @@ export default async function CollectionPage(props: Props) {
   const params = await props.params;
   const { page, limit } = searchParams;
 
+  const offset = parseInt(searchParams.page || '1', 10); // Default to 1 if not provided
+  const pageLimit = parseInt(searchParams.limit || '2', 10); // Default limit to 2
+
   const collection = await getCollectionByHandle(params.handle).then(
     (collection: HttpTypes.StoreCollection) => collection
   );
@@ -80,7 +79,7 @@ export default async function CollectionPage(props: Props) {
     notFound();
   }
 
-  const products = await fetchProducts(limit, Number(page));
+  const products = await fetchProducts(limit, Number(0), '');
 
   const productsWithPrice = products?.filter((item: HttpTypes.StoreProduct) =>
     item.collection?.handle.includes(params.handle)
@@ -91,7 +90,8 @@ export default async function CollectionPage(props: Props) {
       <CollectionWithPagination
         products={productsWithPrice}
         title={collection.title}
-        limit={limit}
+        limit={pageLimit}
+        initialPage={offset}
       />
     </div>
   );
