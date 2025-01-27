@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
 import './globals.css';
-import Navbar from '../components/molecules/navbar';
 import { MedusaProviderComponent } from 'providers/MedusaProviderComponent';
 import { WishlistProvider } from 'providers/WishlistProvider';
 
@@ -27,9 +26,6 @@ export default function RootLayout({
       <body className={poppins.variable}>
         <WishlistProvider>
           <MedusaProviderComponent>
-            <header>
-              <Navbar />
-            </header>
             <main>{children}</main>
           </MedusaProviderComponent>
         </WishlistProvider>

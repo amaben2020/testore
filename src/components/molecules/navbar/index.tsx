@@ -24,6 +24,8 @@ const Navbar = () => {
 
   const cartDropdownRef = useRef(null);
 
+  console.log('wishlist', wishlist);
+
   const fetchCartItems = async () => {
     const cart = await retrieveCart();
     setCartItem(cart);
