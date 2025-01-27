@@ -18,9 +18,9 @@ export default function CollectionWithPagination({
   products,
   title,
   initialSortBy = 'created_at',
-  initialPage = 0,
+  initialPage = 1,
   hideSeeAll = true,
-  limit = 2,
+  limit = 3,
 }: Props) {
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [sortBy, setSortBy] = useState(initialSortBy);
@@ -109,12 +109,16 @@ export default function CollectionWithPagination({
     .slice(offset, offset + itemsPerPage);
 
   return (
-    <div className="flex flex-col items-center py-6 content-container">
-      <h1 className="mb-6 text-2xl font-bold capitalize">{title}</h1>
-
+    <div className="flex flex-col items-center py-3 content-container">
       {/* Sort and Items Per Page Controls */}
-      <div className="flex items-center gap-3 mb-4">
+      <div className="flex items-center gap-2 mb-2">
+        <div>
+          <h1 className="mr-4 text-2xl font-bold capitalize justify-self-start">
+            {title}
+          </h1>
+        </div>
         {/* Sort Dropdown */}
+
         <p className="text-xl font-semibold text-gray-dark">Sort by: </p>
         <select
           value={sortBy}
@@ -132,7 +136,6 @@ export default function CollectionWithPagination({
           onChange={(e) => handleItemsPerPageChange(parseInt(e.target.value))}
           className="px-4 py-2 border rounded"
         >
-          <option value={2}>2 per page</option>
           <option value={3}>3 per page</option>
           <option value={6}>6 per page</option>
           <option value={9}>9 per page</option>
@@ -153,9 +156,9 @@ export default function CollectionWithPagination({
         hideSeeAll={hideSeeAll}
       />
 
-      <div className="flex items-center gap-3 mb-4">
+      <div className="flex items-center gap-3 mb-1">
         {/* Pagination Controls */}
-        <div className="flex items-center justify-center gap-2 mt-2">
+        <div className="flex items-center justify-center gap-2">
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}

@@ -66,10 +66,11 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 export default async function CollectionPage(props: Props) {
   const searchParams = await props.searchParams;
   const params = await props.params;
-  const { page, limit } = searchParams;
 
-  const offset = parseInt(searchParams.page || '1', 10); // Default to 1 if not provided
-  const pageLimit = parseInt(searchParams.limit || '2', 10); // Default limit to 2
+  const offset = parseInt(searchParams.page || '1', 10);
+  const pageLimit = parseInt(searchParams.limit || '3', 10);
+
+  const products = await fetchProducts();
 
   const collection = await getCollectionByHandle(params.handle).then(
     (collection: HttpTypes.StoreCollection) => collection
@@ -78,8 +79,6 @@ export default async function CollectionPage(props: Props) {
   if (!collection) {
     notFound();
   }
-
-  const products = await fetchProducts(limit, Number(0), '');
 
   const productsWithPrice = products?.filter((item: HttpTypes.StoreProduct) =>
     item.collection?.handle.includes(params.handle)

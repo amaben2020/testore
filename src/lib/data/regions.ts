@@ -21,21 +21,6 @@ export const listRegions = async () => {
     .catch(medusaError);
 };
 
-// export const retrieveRegion = async (id: string) => {
-//   const next = {
-//     ...(await getCacheOptions(['regions', id].join('-'))),
-//   };
-
-//   return sdk.client
-//     .fetch<{ region: HttpTypes.StoreRegion }>(`/store/regions/${id}`, {
-//       method: 'GET',
-//       next,
-//       cache: 'force-cache',
-//     })
-//     .then(({ region }) => region)
-//     .catch(medusaError);
-// };
-
 const regionMap = new Map<string, HttpTypes.StoreRegion>();
 
 export const getRegion = async (countryCode: string) => {

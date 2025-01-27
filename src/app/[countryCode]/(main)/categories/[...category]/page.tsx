@@ -8,10 +8,6 @@ import { notFound } from 'next/navigation';
 
 type Props = {
   params: Promise<{ category: string[]; countryCode: string }>;
-  searchParams: Promise<{
-    sortBy?: any;
-    page?: string;
-  }>;
 };
 
 export async function generateStaticParams() {
@@ -46,7 +42,6 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   const params = await props.params;
 
   try {
-    console.log('params.category', params.category);
     const productCategory = await getCategoryByHandle(params.category);
 
     const title = productCategory.name + ' | Medusa Store';
@@ -61,14 +56,13 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
       },
     };
   } catch (error) {
+    console.error(error);
     notFound();
   }
 }
 
 export default async function CategoryPage(props: Props) {
-  const searchParams = await props.searchParams;
   const params = await props.params;
-  const { sortBy, page } = searchParams;
 
   const [{ products: categoryProducts }, { products }] = await Promise.all([
     getCategoryByHandle(params.category),
