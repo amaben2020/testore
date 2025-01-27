@@ -1,6 +1,5 @@
 import CollectionWithPagination from '@/components/organisms/product-category';
-import { getCollectionByHandle, listCollections } from '@/lib/data/collections';
-import { getRegion, listRegions } from '@/lib/data/regions';
+import { getCollectionByHandle } from '@/lib/data/collections';
 import { HttpTypes } from '@medusajs/types';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -14,21 +13,10 @@ type Props = {
   }>;
 };
 
-// export async function generateMetadata(props: Props): Promise<Metadata> {
-//   const params = await props.params;
-//   const collection = await getCollectionByHandle(params.handle);
-
-//   if (!collection) {
-//     notFound();
-//   }
-
-//   const metadata = {
-//     title: `${collection.title} | Testores Store`,
-//     description: `${collection.title} collection`,
-//   } as Metadata;
-
-//   return metadata;
-// }
+export const metadata: Metadata = {
+  title: 'Store page',
+  description: 'This page contains all products in our inventory',
+};
 
 export default async function CollectionPage(props: Props) {
   const searchParams = await props.searchParams;

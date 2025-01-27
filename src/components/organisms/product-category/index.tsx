@@ -48,7 +48,7 @@ export default function CollectionWithPagination({
     setCurrentPage(newPage);
     const query = createQueryString('page', newPage.toString());
     router.push(`${pathname}?${query}`);
-    scrollToTop(); // Smooth scroll to the top
+    scrollToTop();
   };
 
   // Handle sort change
@@ -56,19 +56,17 @@ export default function CollectionWithPagination({
     setSortBy(newSort);
     const query = createQueryString('sortBy', newSort);
     router.push(`${pathname}?${query}`);
-    scrollToTop(); // Smooth scroll to the top
+    scrollToTop();
   };
 
-  // Handle items per page change
   const handleItemsPerPageChange = (newLimit: number) => {
     setItemsPerPage(newLimit);
     setCurrentPage(1); // Reset to first page
     const query = createQueryString('limit', newLimit.toString());
     router.push(`${pathname}?${query}`);
-    scrollToTop(); // Smooth scroll to the top
+    scrollToTop();
   };
 
-  // Handle clearing filters
   const handleClearFilters = () => {
     // Reset the search params and reload the page without filters
     const params = new URLSearchParams();
@@ -78,7 +76,6 @@ export default function CollectionWithPagination({
     setItemsPerPage(limit); // Reset to the default limit
   };
 
-  // Smooth scroll to the top of the page
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -117,8 +114,8 @@ export default function CollectionWithPagination({
             {title}
           </h1>
         </div>
-        {/* Sort Dropdown */}
 
+        {/* Sort Dropdown */}
         <p className="text-xl font-semibold text-gray-dark">Sort by: </p>
         <select
           value={sortBy}
