@@ -57,7 +57,8 @@ const ProductCard = ({ id, title, image, price, variantId }: TProductCard) => {
         countryCode:
           String(countryCode) ?? process.env.NEXT_PUBLIC_DEFAULT_REGION!,
       });
-      // real time sync with cart dropdown
+
+      // real time sync with cart dropdown down the dom tree
       window.dispatchEvent(new Event('cartUpdated'));
       setIsAdded(true);
     } catch (err) {

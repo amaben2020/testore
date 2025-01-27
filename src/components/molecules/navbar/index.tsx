@@ -22,8 +22,9 @@ const Navbar = () => {
   const { wishlist } = useWishlist();
   const [isWishlistDropdownOpen, setIsWishlistDropdownOpen] = useState(false);
 
-  const cartDropdownRef = useRef(null);
-  const wishlistDropdownRef = useRef(null);
+  const cartDropdownRef = useRef<HTMLDivElement | null>(null);
+
+  const wishlistDropdownRef = useRef<HTMLDivElement | null>(null);
 
   const fetchCartItems = async () => {
     const cart = await retrieveCart();

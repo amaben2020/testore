@@ -10,9 +10,9 @@ interface IButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   shadowStrength?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'; // Shadow strength
   variant?: 'primary' | 'secondary'; // Button style variant
   size?: 'sm' | 'md' | 'lg'; // Button size
-  onClick?: () => void; // Click handler
-  disabled?: boolean; // Disabled state
-  className?: string; // Additional custom class names
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void> | void;
+  disabled?: boolean;
+  className?: string;
   href?: string;
   noTextOnMobile?: boolean;
 }

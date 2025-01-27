@@ -5,7 +5,7 @@ import { useCallback, useState } from 'react';
 import ProductCardLayout from '@/components/layout/product-card-layout';
 import { HttpTypes } from '@medusajs/types';
 
-type Props = {
+type TCollectionWithPaginationProps = {
   products: HttpTypes.StoreProduct[];
   title: string;
   initialSortBy?: string;
@@ -21,7 +21,7 @@ export default function CollectionWithPagination({
   initialPage = 1,
   hideSeeAll = true,
   limit = 3,
-}: Props) {
+}: TCollectionWithPaginationProps) {
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [sortBy, setSortBy] = useState(initialSortBy);
   const [itemsPerPage, setItemsPerPage] = useState(limit);
