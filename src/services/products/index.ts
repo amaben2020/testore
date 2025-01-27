@@ -5,14 +5,15 @@ import { getRegion } from '@/lib/data/regions';
 // Fetch products for each collection
 export const fetchProductsForCollection = async (
   collectionId: string,
-  regionId: string
+  regionId: string,
+  limit = 3
 ) => {
   const searchParams = new URLSearchParams({
     'collection_id[]': collectionId,
   });
 
   const { products } = await fetchAPI(
-    `/store/products?${searchParams.toString()}&limit=3&fields=*variants.calculated_price&region_id=${regionId}`
+    `/store/products?${searchParams.toString()}&limit=${limit}&fields=*variants.calculated_price&region_id=${regionId}`
   );
 
   return products;
@@ -36,20 +37,38 @@ export const fetchProduct = async (
   return response.product;
 };
 
-export const fetchProducts = async (): Promise<HttpTypes.StoreProduct[]> => {
-  const url = `/store/products?fields=*variants.calculated_price`;
+// export const fetchProducts = async (
+//   limit?: string,
+//   offset = 0
+// ): Promise<HttpTypes.StoreProduct[]> => {
+//   const url = limit
+//     ? `/store/products?fields=*variants.calculated_price&limit=${limit}&offset=${offset}`
+//     : `/store/products?fields=*variants.calculated_price`;
+//   const response = await fetchAPI(url);
+
+//   return response.products;
+// };
+
+export const fetchProducts = async (
+  limit?: string,
+  offset = 0
+): Promise<HttpTypes.StoreProduct[]> => {
+  const url = limit
+    ? `/store/products?fields=*variants.calculated_price&limit=${limit}&offset=${offset}`
+    : `/store/products?fields=*variants.calculated_price`;
   const response = await fetchAPI(url);
 
   return response.products;
 };
 
 export const fetchProductsCollection = async (
-  countryCode: string
+  countryCode: string,
+  limit = 3
 ): Promise<HttpTypes.StoreProduct[]> => {
   const region = await getRegion(countryCode);
 
   const { products } = await fetchAPI(
-    `/store/products?collection_id=null&limit=3&fields=*variants.calculated_price&region_id=${region?.id}`
+    `/store/products?collection_id=null&limit=${limit}&fields=*variants.calculated_price&region_id=${region?.id}`
   );
 
   return products;

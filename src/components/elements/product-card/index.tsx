@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import LocalizedClientLink from '../localized-link';
 import { addToCart } from '@/lib/data/cart';
 import { useParams } from 'next/navigation';
+import { useWishlist } from 'providers/WishlistProvider';
 
 type TProductCard = {
   id: string;
@@ -15,13 +16,28 @@ type TProductCard = {
   variantId: string;
 };
 
+const BASE_PRODUCT_QUANTITY = 1;
+
 const ProductCard = ({ id, title, image, price, variantId }: TProductCard) => {
   const [isAdded, setIsAdded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { countryCode } = useParams();
 
-  const BASE_PRODUCT_QUANTITY = 1;
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+
+  const handleWishlistToggle = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const clickSound = new Audio('/click.wav');
+    clickSound.play();
+
+    if (isInWishlist(id)) {
+      removeFromWishlist(id);
+    } else {
+      addToWishlist({ id, title, image, price });
+    }
+  };
 
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -76,14 +92,26 @@ const ProductCard = ({ id, title, image, price, variantId }: TProductCard) => {
         disabled={isLoading || isAdded}
       />
 
-      {/* Error Message */}
+      {/* Wishlist Button */}
+      <button
+        onClick={handleWishlistToggle}
+        className="absolute p-1 bg-white rounded-full shadow-md top-2 right-2"
+        title={''}
+      >
+        <Image
+          src={isInWishlist(id) ? '/wishlist-red.svg' : '/wishlist.svg'}
+          alt=""
+          width={30}
+          height={30}
+        />
+      </button>
+
       {error && (
         <p className="absolute text-xs text-red-500 top-12 left-2 sm:top-16 sm:left-5">
           {error}
         </p>
       )}
 
-      {/* Image */}
       <div className="flex items-center justify-center max-h-[170px] md:max-h-[572px] rounded-lg bg-gray-light hover:bg-gray-200">
         <Image
           src={image}

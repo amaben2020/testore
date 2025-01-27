@@ -10,12 +10,17 @@ import { useEffect, useState, useRef } from 'react';
 import { retrieveCart } from '@/lib/data/cart';
 import CartDropdown from '../cart-dropdown';
 import { HttpTypes } from '@medusajs/types';
+import { useWishlist } from 'providers/WishlistProvider';
+import WishlistDropdown from '../wishlist-dropdown';
 
 const Navbar = () => {
   const { toggle: toggleDrawer, isOpen } = useToggle();
 
   const [cartItem, setCartItem] = useState<HttpTypes.StoreCart | null>(null);
   const [isCartDropdownOpen, setIsCartDropdownOpen] = useState(false);
+
+  const { wishlist } = useWishlist();
+  const [isWishlistDropdownOpen, setIsWishlistDropdownOpen] = useState(false);
 
   const cartDropdownRef = useRef(null);
 
@@ -126,6 +131,37 @@ const Navbar = () => {
                 Please add to cart
               </p>
             )}
+          </div>
+
+          {/* Wishlist */}
+
+          <div
+            className="relative"
+            onMouseEnter={() => setIsWishlistDropdownOpen(true)}
+            onMouseLeave={() => {
+              if (wishlist.length === 0) setIsWishlistDropdownOpen(false);
+            }}
+          >
+            <Button
+              title={`Wishlist(${wishlist.length || 0})`}
+              className="relative"
+              onClick={() => setIsWishlistDropdownOpen((prev) => !prev)}
+              icon={
+                <Image
+                  src="/wishlist.svg"
+                  alt="Wishlist"
+                  width={20}
+                  height={12}
+                />
+              }
+              size="sm"
+            />
+
+            <span className="absolute w-4 h-4 px-1 text-xs text-center text-white bg-red-500 rounded-full -right-2 -top-2">
+              {wishlist.length}
+            </span>
+
+            {isWishlistDropdownOpen && <WishlistDropdown />}
           </div>
         </div>
       </ul>

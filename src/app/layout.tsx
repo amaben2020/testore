@@ -3,7 +3,7 @@ import { Poppins } from 'next/font/google';
 import './globals.css';
 import Navbar from '../components/molecules/navbar';
 import { MedusaProviderComponent } from 'providers/MedusaProviderComponent';
-import { retrieveCart } from '@/lib/data/cart';
+import { WishlistProvider } from 'providers/WishlistProvider';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -25,12 +25,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={poppins.variable}>
-        <MedusaProviderComponent>
-          <header>
-            <Navbar />
-          </header>
-          <main>{children}</main>
-        </MedusaProviderComponent>
+        <WishlistProvider>
+          <MedusaProviderComponent>
+            <header>
+              <Navbar />
+            </header>
+            <main>{children}</main>
+          </MedusaProviderComponent>
+        </WishlistProvider>
       </body>
     </html>
   );

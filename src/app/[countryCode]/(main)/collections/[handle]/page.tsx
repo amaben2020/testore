@@ -1,3 +1,4 @@
+// todo: remove component
 import CollectionTemplate from '@/components/molecules/collections/templates';
 import ProductCardLayout from '@/components/layout/product-card-layout';
 import CollectionWithPagination from '@/components/organisms/product-category';
@@ -7,16 +8,15 @@ import { fetchAPI } from '@/services/base';
 import { HttpTypes } from '@medusajs/types';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { fetchProducts } from '@/services/products';
 
 type Props = {
   params: Promise<{ handle: string; countryCode: string }>;
   searchParams: Promise<{
     page?: string;
-    sortBy?: string;
+    limit?: string;
   }>;
 };
-
-export const PRODUCT_LIMIT = 12;
 
 export async function generateStaticParams() {
   const { collections } = await listCollections({
@@ -70,7 +70,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 export default async function CollectionPage(props: Props) {
   const searchParams = await props.searchParams;
   const params = await props.params;
-  const { sortBy, page } = searchParams;
+  const { page, limit } = searchParams;
 
   const collection = await getCollectionByHandle(params.handle).then(
     (collection: HttpTypes.StoreCollection) => collection
@@ -80,11 +80,7 @@ export default async function CollectionPage(props: Props) {
     notFound();
   }
 
-  // todo: get the price from product id inside the collection
-
-  const { products } = await fetchAPI(
-    `/store/products?fields=*variants.calculated_price`
-  );
+  const products = await fetchProducts(limit, page);
 
   const productsWithPrice = products?.filter((item: HttpTypes.StoreProduct) =>
     item.collection?.handle.includes(params.handle)
@@ -95,6 +91,7 @@ export default async function CollectionPage(props: Props) {
       <CollectionWithPagination
         products={productsWithPrice}
         title={collection.title}
+        limit={limit}
       />
     </div>
   );
