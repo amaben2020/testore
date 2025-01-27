@@ -4,7 +4,7 @@ import Image from 'next/image';
 import LocalizedClientLink from '@/components/elements/localized-link';
 import { useWishlist } from 'providers/WishlistProvider';
 
-const WishlistDropdown = () => {
+const WishlistDropdown = ({ onClose }: { onClose: () => void }) => {
   const { wishlist, removeFromWishlist } = useWishlist();
 
   return (
@@ -37,6 +37,7 @@ const WishlistDropdown = () => {
             ))}
             <div>
               <LocalizedClientLink
+                onClick={onClose}
                 href="/wishlist"
                 className="w-full border p-2  text-sm font-bold text-gray-light transition rounded-lg cursor-pointer !bg-black hover:!bg-gray-dark hover:text-white"
               >

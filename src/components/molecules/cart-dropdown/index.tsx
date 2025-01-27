@@ -5,9 +5,18 @@ import Image from 'next/image';
 import LocalizedClientLink from '@/components/elements/localized-link';
 import { convertToLocale } from '@/lib/util/money';
 import { updateLineItem, deleteLineItem } from '@/lib/data/cart';
+import { HttpTypes } from '@medusajs/types';
 
-const CartDropdown = ({ cartItems, onCartUpdate, onClose }) => {
-  const handleIncreaseQuantity = async (lineId, quantity) => {
+const CartDropdown = ({
+  cartItems,
+  onCartUpdate,
+  onClose,
+}: {
+  cartItems: HttpTypes.StoreCart['items'];
+  onCartUpdate: () => void;
+  onClose: () => void;
+}) => {
+  const handleIncreaseQuantity = async (lineId: string, quantity: number) => {
     try {
       await updateLineItem({ lineId, quantity: quantity + 1 });
       window.dispatchEvent(new Event('cartUpdated'));
@@ -16,7 +25,7 @@ const CartDropdown = ({ cartItems, onCartUpdate, onClose }) => {
     }
   };
 
-  const handleDecreaseQuantity = async (lineId, quantity) => {
+  const handleDecreaseQuantity = async (lineId: string, quantity: number) => {
     try {
       if (quantity > 1) {
         await updateLineItem({ lineId, quantity: quantity - 1 });
@@ -31,7 +40,7 @@ const CartDropdown = ({ cartItems, onCartUpdate, onClose }) => {
     }
   };
 
-  const handleRemoveItem = async (lineId) => {
+  const handleRemoveItem = async (lineId: string) => {
     try {
       await deleteLineItem(lineId);
       onCartUpdate();
@@ -45,12 +54,12 @@ const CartDropdown = ({ cartItems, onCartUpdate, onClose }) => {
     <div className="absolute right-0 z-50 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg w-80">
       <div className="p-4">
         <h3 className="mb-4 text-lg font-semibold">Cart</h3>
-        {cartItems?.length > 0 ? (
+        {Number(cartItems?.length) > 0 ? (
           <div className="space-y-4">
-            {cartItems.map((item) => (
+            {cartItems?.map((item) => (
               <div key={item.id} className="flex items-center space-x-4">
                 <Image
-                  src={item.thumbnail}
+                  src={item.thumbnail!}
                   alt={item.title}
                   width={50}
                   height={50}
@@ -104,7 +113,7 @@ const CartDropdown = ({ cartItems, onCartUpdate, onClose }) => {
             <span>Subtotal (excl. taxes):</span>
             <span className="font-semibold">
               {convertToLocale({
-                amount: cartItems.reduce(
+                amount: cartItems!.reduce(
                   (total, item) => total + item.unit_price * item.quantity,
                   0
                 ),

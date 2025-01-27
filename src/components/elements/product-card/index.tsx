@@ -49,6 +49,8 @@ const ProductCard = ({ id, title, image, price, variantId }: TProductCard) => {
     setError(null);
 
     try {
+      const clickSound = new Audio('/product-click.wav');
+      clickSound.play();
       await addToCart({
         variantId,
         quantity: BASE_PRODUCT_QUANTITY,

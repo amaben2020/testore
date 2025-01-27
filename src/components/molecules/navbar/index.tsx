@@ -23,15 +23,13 @@ const Navbar = () => {
   const [isWishlistDropdownOpen, setIsWishlistDropdownOpen] = useState(false);
 
   const cartDropdownRef = useRef(null);
-
-  console.log('wishlist', wishlist);
+  const wishlistDropdownRef = useRef(null);
 
   const fetchCartItems = async () => {
     const cart = await retrieveCart();
     setCartItem(cart);
   };
 
-  // Fetch cart on mount and listen for updates
   useEffect(() => {
     fetchCartItems();
 
@@ -47,19 +45,30 @@ const Navbar = () => {
     };
   }, []);
 
-  const handleClickOutside = (event) => {
+  const handleClickOutside = (event: MouseEvent) => {
     if (
       cartDropdownRef.current &&
-      !cartDropdownRef.current.contains(event.target)
+      !cartDropdownRef.current.contains(event.target as Node)
     ) {
       setIsCartDropdownOpen(false);
     }
   };
 
+  const handleClickWishlistOutside = (event: MouseEvent) => {
+    if (
+      wishlistDropdownRef.current &&
+      !wishlistDropdownRef.current.contains(event.target as Node)
+    ) {
+      setIsWishlistDropdownOpen(false);
+    }
+  };
+
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('mousedown', handleClickWishlistOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('mousedown', handleClickWishlistOutside);
     };
   }, []);
 
@@ -124,7 +133,7 @@ const Navbar = () => {
             {isCartDropdownOpen && cartItem?.items && (
               <CartDropdown
                 cartItems={cartItem?.items}
-                onCartUpdate={fetchCartItems} // Optional, for direct updates
+                onCartUpdate={fetchCartItems}
                 onClose={() => setIsCartDropdownOpen(false)}
               />
             )}
@@ -136,13 +145,13 @@ const Navbar = () => {
           </div>
 
           {/* Wishlist */}
-
           <div
             className="relative"
             onMouseEnter={() => setIsWishlistDropdownOpen(true)}
             onMouseLeave={() => {
               if (wishlist.length === 0) setIsWishlistDropdownOpen(false);
             }}
+            ref={wishlistDropdownRef}
           >
             <Button
               title={`Wishlist(${wishlist.length || 0})`}
@@ -163,7 +172,11 @@ const Navbar = () => {
               {wishlist.length}
             </span>
 
-            {isWishlistDropdownOpen && <WishlistDropdown />}
+            {isWishlistDropdownOpen && (
+              <WishlistDropdown
+                onClose={() => setIsWishlistDropdownOpen(false)}
+              />
+            )}
           </div>
         </div>
       </ul>
