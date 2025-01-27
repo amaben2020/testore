@@ -1,11 +1,10 @@
-import { fetchAPI } from '@/services/base';
-
 import ProductCardLayout from '@/components/layout/product-card-layout';
 import { HttpTypes } from '@medusajs/types';
-import { fetchProductsForCollection } from '@/services/products';
+import { fetchProducts, fetchProductsForCollection } from '@/services/products';
 import Hero from '@/components/molecules/hero';
 import { getRegion } from '@/lib/data/regions';
 import CTA from '@/components/molecules/cta';
+import { listCollections } from '@/lib/data/collections';
 
 const Home = async ({
   params,
@@ -16,11 +15,9 @@ const Home = async ({
 
   const region = await getRegion(countryCode);
 
-  const collections = await fetchAPI('/store/collections');
+  const collections = await listCollections();
 
-  const { products } = await fetchAPI(
-    `/store/products?collection_id=null&limit=3&fields=*variants.calculated_price&region_id=${region?.id}`
-  );
+  const products = await fetchProducts('3', 0, region?.id);
 
   const [latestDrops, recommended] = await Promise.all(
     collections?.collections?.map(

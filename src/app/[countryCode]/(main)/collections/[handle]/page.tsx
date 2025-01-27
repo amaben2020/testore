@@ -80,7 +80,7 @@ export default async function CollectionPage(props: Props) {
     notFound();
   }
 
-  const products = await fetchProducts(limit, page);
+  const products = await fetchProducts(limit, Number(page));
 
   const productsWithPrice = products?.filter((item: HttpTypes.StoreProduct) =>
     item.collection?.handle.includes(params.handle)

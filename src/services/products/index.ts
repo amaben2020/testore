@@ -37,25 +37,20 @@ export const fetchProduct = async (
   return response.product;
 };
 
-// export const fetchProducts = async (
-//   limit?: string,
-//   offset = 0
-// ): Promise<HttpTypes.StoreProduct[]> => {
-//   const url = limit
-//     ? `/store/products?fields=*variants.calculated_price&limit=${limit}&offset=${offset}`
-//     : `/store/products?fields=*variants.calculated_price`;
-//   const response = await fetchAPI(url);
-
-//   return response.products;
-// };
-
 export const fetchProducts = async (
   limit?: string,
-  offset = 0
+  offset = 0,
+  regionId?: string
 ): Promise<HttpTypes.StoreProduct[]> => {
+  const region = await getRegion('us');
+
   const url = limit
-    ? `/store/products?fields=*variants.calculated_price&limit=${limit}&offset=${offset}`
-    : `/store/products?fields=*variants.calculated_price`;
+    ? `/store/products?fields=*variants.calculated_price&limit=${limit}&offset=${offset}&region_id=${
+        regionId ?? region?.id
+      }`
+    : `/store/products?fields=*variants.calculated_price&region_id=${
+        regionId ?? region?.id
+      }`;
   const response = await fetchAPI(url);
 
   return response.products;
