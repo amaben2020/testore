@@ -124,7 +124,7 @@ const ProductCard = ({ id, title, image, price, variantId }: TProductCard) => {
           className="w-[160px] h-[170px] md:w-[363px] md:h-[493px] object-contain"
           quality={100}
           onError={(e) => {
-            e.currentTarget.src = '/bag.svg';
+            e.currentTarget.src = '/bag.png';
           }}
         />
       </div>

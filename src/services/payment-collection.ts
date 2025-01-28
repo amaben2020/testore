@@ -1,60 +1,59 @@
-import { HttpTypes } from '@medusajs/types';
-import { fetchAPI } from './base';
+import axios from 'axios';
 
-/**
- * Creates a payment collection.
- * @param cartId - The ID of the cart.
- * @returns The payment collection ID.
- */
-export const createPaymentCollection = async (
-  cartId: string
-): Promise<string> => {
-  const data = await fetchAPI('/store/payment-collections', {
-    method: 'POST',
-    body: { cart_id: cartId },
-  });
+export const createPaymentCollectionResponse = async (cartItem: {
+  cart_id: string;
+}) => {
+  try {
+    const data = await axios.post(
+      `${process.env.MEDUSA_BACKEND_URL!}/store/payment-collections`,
+      cartItem,
+      {
+        headers: {
+          'x-publishable-api-key':
+            process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY ?? '',
+        },
+      }
+    );
 
-  if (!data?.payment_collection || !payment_collection.id) {
-    throw new Error('Failed to create payment collection');
-  }
-
-  return data?.payment_collection.id;
-};
-
-/**
- * Creates a payment session for a given payment collection.
- * @param paymentCollectionId - The ID of the payment collection.
- * @param providerId - The payment provider ID (default: 'pp_system_default').
- */
-export const createPaymentSession = async (
-  paymentCollectionId: string,
-  providerId = 'pp_system_default'
-): Promise<void> => {
-  const response = await fetchAPI(
-    `/store/payment-collections/${paymentCollectionId}/payment-sessions`,
-    {
-      method: 'POST',
-      body: { provider_id: providerId },
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error('Failed to create payment session');
+    return data.data;
+  } catch (error) {
+    console.log(error);
   }
 };
 
-/**
- * Completes the cart and clears it if successful.
- * @param cartId - The ID of the cart.
- * @returns The order data.
- */
-export const completeCart = async (
-  cartId: string
-): Promise<HttpTypes.StoreCart> => {
-  const url = `/store/carts/${cartId}/complete`;
-  const response = await fetchAPI(url, {
-    method: 'POST',
-  });
+export const createPaymentCollectionSession = async (collectionId: string) => {
+  try {
+    await axios.post(
+      `${process.env
+        .MEDUSA_BACKEND_URL!}/store/payment-collections/${collectionId}/payment-sessions`,
+      { provider_id: 'pp_system_default' },
+      {
+        headers: {
+          'x-publishable-api-key':
+            process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY || 'temp',
+        },
+      }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-  return response.cart;
+export const completeCart = async (cartId: string) => {
+  try {
+    const data = await axios.post(
+      `${process.env.MEDUSA_BACKEND_URL!}/store/carts/${cartId}/complete`,
+      {},
+      {
+        headers: {
+          'x-publishable-api-key':
+            process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+        },
+      }
+    );
+
+    return data.data;
+  } catch (error) {
+    console.log(error);
+  }
 };

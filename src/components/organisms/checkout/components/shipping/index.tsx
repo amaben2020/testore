@@ -50,7 +50,7 @@ export default function PaymentAndShipping({
     };
     try {
       const paymentCollectionResponse = await axios.post(
-        'http://localhost:9000/store/payment-collections',
+        `http://localhost:9000/store/payment-collections`,
         cartItem,
         {
           headers: {
@@ -61,8 +61,6 @@ export default function PaymentAndShipping({
       );
 
       const { data: collectionResp } = paymentCollectionResponse;
-
-      console.log('collectionResp', collectionResp.payment_collection);
 
       await axios.post(
         `http://localhost:9000/store/payment-collections/${collectionResp?.payment_collection.id}/payment-sessions`,
@@ -75,7 +73,6 @@ export default function PaymentAndShipping({
         }
       );
 
-      // Step 3: Complete the Cart
       const { data: completeResponse } = await axios.post(
         `http://localhost:9000/store/carts/${cart.id}/complete`,
         {},
