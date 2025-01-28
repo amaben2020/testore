@@ -1,9 +1,5 @@
-// import CollectionTemplate from '@/components/molecules/collections/templates';
-
 import CollectionWithPagination from '@/components/organisms/product-category';
-// import CollectionWithPagination from '@/components/organisms/product-category';
 import { getCollectionByHandle } from '@/services/collections';
-
 import { fetchProductsCollection } from '@/services/products';
 import { HttpTypes } from '@medusajs/types';
 
@@ -18,12 +14,7 @@ type Props = {
 };
 
 export default async function CollectionPage(props: Props) {
-  const searchParams = await props.searchParams;
   const params = await props.params;
-
-  console.log(params);
-
-  const { sortBy, page } = searchParams;
 
   const collection = await getCollectionByHandle(params.handle).then(
     (collection: HttpTypes.StoreCollection) => collection

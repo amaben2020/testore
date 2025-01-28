@@ -2,13 +2,10 @@ import { convertToLocale } from '@/lib/util/money';
 import { fetchAPI } from '@/services/base';
 import Image from 'next/image';
 
-const Order = async ({ params }) => {
+const Order = async ({ params }: { params: { id: string } }) => {
   const { id } = await params;
 
-  console.log(id);
-
   const { order } = await fetchAPI(`/store/orders/${id}`);
-  console.log(order);
 
   if (!order) {
     return <div className="py-8 text-center">Order not found.</div>;
@@ -50,7 +47,7 @@ const Order = async ({ params }) => {
       <div className="p-6 mb-8 bg-white rounded-lg shadow-md">
         <h2 className="mb-4 text-xl font-bold">Order Items</h2>
         <div className="space-y-4">
-          {order.items.map((item) => (
+          {order?.items.map((item) => (
             <div key={item.id} className="flex items-center pb-4 border-b">
               <Image
                 width={18}
