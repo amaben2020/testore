@@ -1,8 +1,9 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Uzochukwu Benneth's assessment
 
 ## Getting Started
 
-First, run the development server:
+1. Git clone
+   First, run the development server:
 
 ```bash
 npm run dev
@@ -14,23 +15,41 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Other Info:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Setup and Demo Instructions
+Database Setup:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Follow this guide to set up a PostgreSQL database using Docker: Bytebase Blog.
+Medusa App Setup:
 
-## Learn More
+Run npx create-medusa-app@latest to initialize the app.
 
-To learn more about Next.js, take a look at the following resources:
+Admin credentials:
+Email: admin@medusa-test.com
+Password: fHGuen5e8wUkYEV
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Database Migration:
+Local to Hosted Migration:
+Export from local PostgreSQL:
+pg_dump -U postgres -h localhost -p 5432 postgres > local_backup.sql
+Import to hosted PostgreSQL:
+psql 'postgresql://neondb_owner:npg_F82ukohdXraz@ep-nameless-mountain-a40whqli-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require' < local_backup.sql
+Medusa Docs: Medusa Docs
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Demo:
+Watch the demo here: https://www.loom.com/share/2bd68ddfb17a401b8bad1be7531e645f?sid=b414b750-7236-4ce1-a147-83055d0d1a4c
 
-## Deploy on Vercel
+Notes:
+Outdated Next.js Head:
+The Next.js Head API is outdated in Medusa v2, and instead, the metadata API should be used.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Medusa V2 Limitations:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Wishlist functionality and plugin installation are limited in Medusa v2. Specifically, only the Stripe payment plugin is supported.
+Manual Fulfillment and other plugins are not supported in Medusa v2. More details here: Stack Overflow.
+Deployment Issues:
+Deployment on free platforms like Railway requires payment (due to $5/month minimum), but I can deploy on request.
+
+Medusa V1 Stability:
+While Medusa v1 is more stable and robust, I opted for v2 as it was recommended in the docs.
