@@ -19,12 +19,11 @@ export default async function CollectionPage(props: Props) {
   const collection = await getCollectionByHandle(params.handle).then(
     (collection: HttpTypes.StoreCollection) => collection
   );
+  const products = await fetchProductsCollection(params.countryCode ?? 'us');
 
   if (!collection) {
     notFound();
   }
-
-  const products = await fetchProductsCollection(params.countryCode ?? 'us');
 
   return (
     <div>

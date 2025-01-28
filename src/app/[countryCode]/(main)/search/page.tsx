@@ -1,6 +1,5 @@
 import React from 'react';
 
-import ProductSortFilterLayout from '@/components/molecules/sort-filter';
 import { fetchSearchProducts } from '@/services/products';
 import CollectionWithPagination from '@/components/organisms/product-category';
 

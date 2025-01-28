@@ -7,6 +7,7 @@ import { notFound } from 'next/navigation';
 
 export const metadata: Metadata = {
   title: 'Checkout',
+  description: 'This is where all purchased items are paid on order creation',
 };
 
 export default async function Checkout() {
