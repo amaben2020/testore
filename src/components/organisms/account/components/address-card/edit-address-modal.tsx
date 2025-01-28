@@ -8,7 +8,7 @@ import { HttpTypes } from '@medusajs/types';
 import {
   deleteCustomerAddress,
   updateCustomerAddress,
-} from '@/lib/data/customer';
+} from '@/services/customer';
 import Spinner from '@/components/icons/spinner';
 import { Dialog } from '@headlessui/react';
 import Input from '@/components/elements/input';

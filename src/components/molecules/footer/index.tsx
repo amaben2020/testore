@@ -1,6 +1,6 @@
 import LocalizedClientLink from '@/components/elements/localized-link';
-import { listCategories } from '@/lib/data/categories';
-import { listCollections } from '@/lib/data/collections';
+import { listCategories } from '@/services/categories';
+import { listCollections } from '@/services/collections';
 import { clx } from '@medusajs/ui';
 import Image from 'next/image';
 import AccordionComponent, { TAccordionProps } from '../accordion';

@@ -56,20 +56,20 @@ const CheckoutSummary = ({ cart }: { cart: HttpTypes.StoreCart }) => {
             <div className="space-y-4">
               <div className="flex justify-between">
                 <span>Subtotal</span>
-                <span>${(cart?.subtotal / 100).toFixed(2)}</span>
+                <span>${(cart?.subtotal).toFixed(2)}</span>
               </div>
               <div className="flex justify-between">
                 <span>Taxes</span>
-                <span>${(cart?.tax_total / 100).toFixed(2)}</span>
+                <span>${(cart?.tax_total).toFixed(2)}</span>
               </div>
               <div className="flex justify-between">
                 <span>Shipping</span>
-                <span>${(cart?.shipping_total / 100).toFixed(2)}</span>
+                <span>${(cart?.shipping_total).toFixed(2)}</span>
               </div>
               <div className="pt-4 border-t">
                 <div className="flex justify-between font-bold">
                   <span>Total</span>
-                  <span>${(cart?.total / 100).toFixed(2)}</span>
+                  <span>${(cart?.total).toFixed(2)}</span>
                 </div>
               </div>
             </div>

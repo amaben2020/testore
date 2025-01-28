@@ -1,5 +1,5 @@
 import CollectionWithPagination from '@/components/organisms/product-category';
-import { getCollectionByHandle } from '@/lib/data/collections';
+import { getCollectionByHandle } from '@/services/collections';
 import { HttpTypes } from '@medusajs/types';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';

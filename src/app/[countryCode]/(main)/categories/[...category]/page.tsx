@@ -1,6 +1,6 @@
 import ProductCardLayout from '@/components/layout/product-card-layout';
-import { getCategoryByHandle, listCategories } from '@/lib/data/categories';
-import { listRegions } from '@/lib/data/regions';
+import { getCategoryByHandle, listCategories } from '@/services/categories';
+import { listRegions } from '@/services/regions';
 import { fetchAPI } from '@/services/base';
 import { HttpTypes } from '@medusajs/types';
 import { Metadata } from 'next';

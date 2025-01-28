@@ -11,8 +11,8 @@ import {
   removeAuthToken,
   setAuthToken,
 } from './cookies';
-import { sdk } from '../config';
-import medusaError from '../util/medusa-error';
+import { sdk } from '../lib/config';
+import medusaError from '../lib/util/medusa-error';
 
 export const retrieveCustomer =
   async (): Promise<HttpTypes.StoreCustomer | null> => {

@@ -1,10 +1,10 @@
 'use client';
 
 import { FormEvent, useState } from 'react';
-import { addToCart } from '@/lib/data/cart';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import Button from '@/components/elements/button';
+import { addToCart } from '@/services/cart';
 
 export default function AddToCart({
   productId,
@@ -29,6 +29,7 @@ export default function AddToCart({
       quantity: 1,
       countryCode,
     });
+    window.dispatchEvent(new Event('cartUpdated'));
 
     setIsAdding(false);
   };

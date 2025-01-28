@@ -1,5 +1,5 @@
 import AccountLayout from '@/components/organisms/account/templates/account-layout';
-import { retrieveCustomer } from '@/lib/data/customer';
+import { retrieveCustomer } from '@/services/customer';
 import { Toaster } from '@medusajs/ui';
 
 export default async function AccountPageLayout({

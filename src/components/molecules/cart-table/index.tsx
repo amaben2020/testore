@@ -1,29 +1,31 @@
 'use client';
 import { useState, useTransition } from 'react';
 import Image from 'next/image';
-import { updateLineItem, deleteLineItem, retrieveCart } from '@/lib/data/cart';
-import Button from '@/components/elements/button';
 
-const CartTable = ({ cart }) => {
+import Button from '@/components/elements/button';
+import { deleteLineItem, retrieveCart, updateLineItem } from '@/services/cart';
+import { HttpTypes } from '@medusajs/types';
+
+const CartTable = ({ cart }: { cart: HttpTypes.StoreCart }) => {
   const [isPending, startTransition] = useTransition();
   const [cartItems, setCartItems] = useState(cart.items);
 
-  const handleQuantityChange = async (lineId, quantity) => {
+  const handleQuantityChange = async (lineId: string, quantity: number) => {
     startTransition(async () => {
       await updateLineItem({ lineId, quantity });
       // Revalidate cart data
       const updatedCart = await retrieveCart();
-      setCartItems(updatedCart.items);
+      setCartItems(updatedCart?.items);
       window.dispatchEvent(new Event('cartUpdated'));
     });
   };
 
-  const handleRemoveItem = async (lineId) => {
+  const handleRemoveItem = async (lineId: string) => {
     startTransition(async () => {
       await deleteLineItem(lineId);
       // Revalidate cart data
       const updatedCart = await retrieveCart();
-      setCartItems(updatedCart.items);
+      setCartItems(updatedCart?.items);
       window.dispatchEvent(new Event('cartUpdated'));
     });
   };
@@ -51,7 +53,7 @@ const CartTable = ({ cart }) => {
           </tr>
         </thead>
         <tbody>
-          {cartItems.map((item) => (
+          {cartItems?.map((item) => (
             <tr key={item.id} className="transition hover:bg-gray-light">
               <td className="px-4 py-4 border-b">
                 <div className="flex items-center">
@@ -97,6 +99,7 @@ const CartTable = ({ cart }) => {
                     <Image alt="" src="/trash.svg" height={24} width={24} />
                   }
                   onClick={() => handleRemoveItem(item.id)}
+                  disabled={isPending}
                 />
               </td>
             </tr>

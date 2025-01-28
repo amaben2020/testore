@@ -1,4 +1,4 @@
-import { login } from '@/lib/data/customer';
+import { login } from '@/services/customer';
 import { useActionState } from 'react';
 import { LOGIN_VIEW } from '../../templates/login-template';
 import Input from '@/components/elements/input';

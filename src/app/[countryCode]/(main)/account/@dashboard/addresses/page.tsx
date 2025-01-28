@@ -1,6 +1,6 @@
 import AddressBook from '@/components/organisms/account/components/address-book';
-import { retrieveCustomer } from '@/lib/data/customer';
-import { getRegion } from '@/lib/data/regions';
+import { retrieveCustomer } from '@/services/customer';
+import { getRegion } from '@/services/regions';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 

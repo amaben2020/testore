@@ -13,7 +13,7 @@ import PaymentContainer from '../payment-container';
 import { isStripe as isStripeFunc, paymentInfoMap } from '@/lib/constants';
 import ErrorMessage from '../error-message';
 import { StripeContext } from '../payment-wrapper/stripe-wrapper';
-import { initiatePaymentSession } from '@/lib/data/cart';
+import { initiatePaymentSession } from '@/lib/services/cart';
 
 const Payment = ({
   cart,

@@ -2,7 +2,7 @@
 
 import { useActionState } from 'react';
 import { LOGIN_VIEW } from '../../templates/login-template';
-import { signup } from '@/lib/data/customer';
+import { signup } from '@/services/customer';
 import Input from '@/components/elements/input';
 import LocalizedClientLink from '@/components/elements/localized-link';
 import { SubmitButton } from '@/components/organisms/checkout/components/submit-button';

@@ -1,6 +1,6 @@
 import Overview from '@/components/organisms/account/components/overview';
-import { retrieveCustomer } from '@/lib/data/customer';
-import { listOrders } from '@/lib/data/orders';
+import { retrieveCustomer } from '@/services/customer';
+import { listOrders } from '@/services/orders';
 import { Metadata } from 'next';
 
 import { notFound } from 'next/navigation';

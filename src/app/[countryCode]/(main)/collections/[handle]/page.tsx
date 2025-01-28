@@ -1,6 +1,6 @@
 import CollectionWithPagination from '@/components/organisms/product-category';
-import { getCollectionByHandle, listCollections } from '@/lib/data/collections';
-import { listRegions } from '@/lib/data/regions';
+import { getCollectionByHandle, listCollections } from '@/services/collections';
+import { listRegions } from '@/services/regions';
 import { HttpTypes } from '@medusajs/types';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';

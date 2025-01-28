@@ -1,6 +1,6 @@
 import ProfileBillingAddress from '@/components/organisms/account/components/profile-billing-address';
-import { retrieveCustomer } from '@/lib/data/customer';
-import { listRegions } from '@/lib/data/regions';
+import { retrieveCustomer } from '@/services/customer';
+import { listRegions } from '@/services/regions';
 import { Metadata } from 'next';
 
 import { notFound } from 'next/navigation';

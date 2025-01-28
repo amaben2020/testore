@@ -1,7 +1,7 @@
 import Banner from '@/components/elements/banner';
 import CheckoutSummary from '@/components/organisms/checkout/templates/checkout-summary';
-import { retrieveCart } from '@/lib/data/cart';
-import { retrieveCustomer } from '@/lib/data/customer';
+import { retrieveCart } from '@/services/cart';
+import { retrieveCustomer } from '@/services/customer';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 

@@ -10,9 +10,58 @@ import {
   removeCartId,
   setCartId,
 } from './cookies';
+
+import { fetchAPI } from './base';
+import { sdk } from '@/lib/config';
 import { getRegion } from './regions';
-import { sdk } from '../config';
-import medusaError from '../util/medusa-error';
+import medusaError from '@/lib/util/medusa-error';
+
+export const getCart = async (
+  cartId: string
+): Promise<HttpTypes.StoreCartResponse> => {
+  const url = `/store/carts/${cartId}`;
+  const response = await fetchAPI(url);
+
+  return response.cart;
+};
+
+export const setCartCustomer = async (
+  cartId: string,
+  customerId: string
+): Promise<HttpTypes.StoreCart> => {
+  const url = `/store/carts/${cartId}/customer`;
+  const response = await fetchAPI(url, {
+    method: 'POST',
+    body: JSON.stringify({ customer_id: customerId }),
+  });
+
+  return response.cart;
+};
+
+export const addLineItem = async (
+  cartId: string,
+  payload: HttpTypes.StoreAddCartLineItem
+): Promise<HttpTypes.StoreCartResponse> => {
+  const url = `/store/carts/${cartId}/line-items`;
+  const response = await fetchAPI(url, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+
+  return response.cart;
+};
+
+export const removeLineItem = async (
+  cartId: string,
+  lineItemId: string
+): Promise<HttpTypes.StoreCart> => {
+  const url = `/store/carts/${cartId}/line-items/${lineItemId}`;
+  const response = await fetchAPI(url, {
+    method: 'DELETE',
+  });
+
+  return response.cart;
+};
 
 /**
  * Retrieves a cart by its ID. If no ID is provided, it will use the cart ID from the cookies.

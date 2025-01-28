@@ -11,7 +11,7 @@ import ErrorMessage from '../error-message';
 import ShippingAddress from '../shipping-address';
 import { SubmitButton } from '../submit-button';
 import compareAddresses from '@/lib/util/compare-addresses';
-import { setAddresses } from '@/lib/data/cart';
+import { setAddresses } from '@/lib/services/cart';
 
 const Addresses = ({
   cart,

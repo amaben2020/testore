@@ -2,9 +2,9 @@ import ProductCardLayout from '@/components/layout/product-card-layout';
 import { HttpTypes } from '@medusajs/types';
 import { fetchProducts, fetchProductsForCollection } from '@/services/products';
 import Hero from '@/components/molecules/hero';
-import { getRegion } from '@/lib/data/regions';
+import { getRegion } from '@/services/regions';
 import CTA from '@/components/molecules/cta';
-import { listCollections } from '@/lib/data/collections';
+import { listCollections } from '@/services/collections';
 
 const Home = async ({
   params,

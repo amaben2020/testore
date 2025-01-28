@@ -1,55 +1,57 @@
-"use client"
+'use client';
 
-import { Badge, Heading, Input, Label, Text, Tooltip } from "@medusajs/ui"
-import React, { useActionState } from "react";
+import { Badge, Heading, Input, Label, Text, Tooltip } from '@medusajs/ui';
+import React, { useActionState } from 'react';
 
-import { applyPromotions, submitPromotionForm } from "@lib/data/cart"
-import { convertToLocale } from "@lib/util/money"
-import { InformationCircleSolid } from "@medusajs/icons"
-import { HttpTypes } from "@medusajs/types"
-import Trash from "@modules/common/icons/trash"
-import ErrorMessage from "../error-message"
-import { SubmitButton } from "../submit-button"
+import { applyPromotions, submitPromotionForm } from '@lib/services/cart';
+import { convertToLocale } from '@lib/util/money';
+import { InformationCircleSolid } from '@medusajs/icons';
+import { HttpTypes } from '@medusajs/types';
+import Trash from '@modules/common/icons/trash';
+import ErrorMessage from '../error-message';
+import { SubmitButton } from '../submit-button';
 
 type DiscountCodeProps = {
   cart: HttpTypes.StoreCart & {
-    promotions: HttpTypes.StorePromotion[]
-  }
-}
+    promotions: HttpTypes.StorePromotion[];
+  };
+};
 
 const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
-  const [isOpen, setIsOpen] = React.useState(false)
+  const [isOpen, setIsOpen] = React.useState(false);
 
-  const { items = [], promotions = [] } = cart
+  const { items = [], promotions = [] } = cart;
   const removePromotionCode = async (code: string) => {
     const validPromotions = promotions.filter(
       (promotion) => promotion.code !== code
-    )
+    );
 
     await applyPromotions(
       validPromotions.filter((p) => p.code === undefined).map((p) => p.code!)
-    )
-  }
+    );
+  };
 
   const addPromotionCode = async (formData: FormData) => {
-    const code = formData.get("code")
+    const code = formData.get('code');
     if (!code) {
-      return
+      return;
     }
-    const input = document.getElementById("promotion-input") as HTMLInputElement
+    const input = document.getElementById(
+      'promotion-input'
+    ) as HTMLInputElement;
     const codes = promotions
       .filter((p) => p.code === undefined)
-      .map((p) => p.code!)
-    codes.push(code.toString())
+      .map((p) => p.code!);
+    codes.push(code.toString());
 
-    await applyPromotions(codes)
+    await applyPromotions(codes);
 
     if (input) {
-      input.value = ""
+      input.value = '';
     }
-  }
+  };
 
-  const [message, formAction] = useActionState(submitPromotionForm, null)
+  const [message, formAction] = useActionState(submitPromotionForm, null);
 
   return (
     <div className="w-full bg-white flex flex-col">
@@ -114,18 +116,18 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
                     <Text className="flex gap-x-1 items-baseline txt-small-plus w-4/5 pr-1">
                       <span className="truncate" data-testid="discount-code">
                         <Badge
-                          color={promotion.is_automatic ? "green" : "grey"}
+                          color={promotion.is_automatic ? 'green' : 'grey'}
                           size="small"
                         >
                           {promotion.code}
-                        </Badge>{" "}
+                        </Badge>{' '}
                         (
                         {promotion.application_method?.value !== undefined &&
                           promotion.application_method.currency_code !==
                             undefined && (
                             <>
                               {promotion.application_method.type ===
-                              "percentage"
+                              'percentage'
                                 ? `${promotion.application_method.value}%`
                                 : convertToLocale({
                                     amount: promotion.application_method.value,
@@ -148,10 +150,10 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
                         className="flex items-center"
                         onClick={() => {
                           if (!promotion.code) {
-                            return
+                            return;
                           }
 
-                          removePromotionCode(promotion.code)
+                          removePromotionCode(promotion.code);
                         }}
                         data-testid="remove-discount-button"
                       >
@@ -162,14 +164,14 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
                       </button>
                     )}
                   </div>
-                )
+                );
               })}
             </div>
           </div>
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default DiscountCode
+export default DiscountCode;

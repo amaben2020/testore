@@ -2,7 +2,7 @@
 
 import CollectionWithPagination from '@/components/organisms/product-category';
 // import CollectionWithPagination from '@/components/organisms/product-category';
-import { getCollectionByHandle } from '@/lib/data/collections';
+import { getCollectionByHandle } from '@/services/collections';
 
 import { fetchProductsCollection } from '@/services/products';
 import { HttpTypes } from '@medusajs/types';

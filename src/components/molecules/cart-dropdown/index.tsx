@@ -4,9 +4,10 @@ import React from 'react';
 import Image from 'next/image';
 import LocalizedClientLink from '@/components/elements/localized-link';
 import { convertToLocale } from '@/lib/util/money';
-import { updateLineItem, deleteLineItem } from '@/lib/data/cart';
+
 import { HttpTypes } from '@medusajs/types';
 import Trash from '@/components/icons/trash';
+import { deleteLineItem, updateLineItem } from '@/services/cart';
 
 const CartDropdown = ({
   cartItems,

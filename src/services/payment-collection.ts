@@ -1,4 +1,5 @@
-import { fetchAPI } from '../base';
+import { HttpTypes } from '@medusajs/types';
+import { fetchAPI } from './base';
 
 /**
  * Creates a payment collection.
@@ -47,17 +48,13 @@ export const createPaymentSession = async (
  * @param cartId - The ID of the cart.
  * @returns The order data.
  */
-export const completeCart = async (cartId: string): Promise<any> => {
-  const { type, order } = await fetchAPI(`/store/carts/${cartId}/complete`, {
+export const completeCart = async (
+  cartId: string
+): Promise<HttpTypes.StoreCart> => {
+  const url = `/store/carts/${cartId}/complete`;
+  const response = await fetchAPI(url, {
     method: 'POST',
   });
 
-  if (type !== 'order' || !order) {
-    throw new Error('Failed to complete the cart');
-  }
-
-  // Clear the cart
-  await fetchAPI(`/store/carts/${cartId}`, { method: 'DELETE' });
-
-  return order;
+  return response.cart;
 };

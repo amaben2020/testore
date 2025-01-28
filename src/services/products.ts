@@ -1,6 +1,6 @@
 import { HttpTypes } from '@medusajs/types';
-import { fetchAPI } from '../base';
-import { getRegion } from '@/lib/data/regions';
+import { getRegion } from '@/services/regions';
+import { fetchAPI } from './base';
 
 export const fetchProductsForCollection = async (
   collectionId: string,

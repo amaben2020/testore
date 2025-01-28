@@ -4,7 +4,7 @@ import React, { useEffect, useActionState } from 'react';
 
 import AccountInfo from '../account-info';
 import { HttpTypes } from '@medusajs/types';
-import { updateCustomer } from '@/lib/data/customer';
+import { updateCustomer } from '@/services/customer';
 import Input from '@/components/elements/input';
 
 type MyInformationProps = {

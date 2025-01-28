@@ -96,15 +96,6 @@ const Order = async ({ params }) => {
             <p className="text-gray-600">Payment Method:</p>
             <p className="font-semibold">Credit Card</p>
           </div>
-          <div>
-            <p className="text-gray-600">Amount Paid:</p>
-            <p className="font-semibold">
-              {/* {convertToLocale({
-                amount: order.payment_collections[0].authorized_amount,
-                currency_code: order.currency_code,
-              })} */}
-            </p>
-          </div>
         </div>
       </div>
     </div>

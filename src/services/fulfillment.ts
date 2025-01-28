@@ -2,7 +2,7 @@
 
 import { HttpTypes } from '@medusajs/types';
 import { getAuthHeaders, getCacheOptions } from './cookies';
-import { sdk } from '../config';
+import { sdk } from '../lib/config';
 
 export const listCartShippingMethods = async (cartId: string) => {
   const headers = {

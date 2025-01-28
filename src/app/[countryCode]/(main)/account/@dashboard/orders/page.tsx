@@ -1,6 +1,6 @@
 import OrderOverview from '@/components/organisms/account/components/order-overview';
 import TransferRequestForm from '@/components/organisms/account/components/transfer-request-form';
-import { listOrders } from '@/lib/data/orders';
+import { listOrders } from '@/services/orders';
 import { Metadata } from 'next';
 
 import { notFound } from 'next/navigation';

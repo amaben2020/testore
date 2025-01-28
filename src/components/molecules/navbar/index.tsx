@@ -7,11 +7,11 @@ import useToggle from '@/hooks/useToggle';
 import LocalizedClientLink from '@/components/elements/localized-link';
 import SearchModal from '../search-modal';
 import { useEffect, useState, useRef } from 'react';
-import { retrieveCart } from '@/lib/data/cart';
 import CartDropdown from '../cart-dropdown';
 import { HttpTypes } from '@medusajs/types';
 import { useWishlist } from 'providers/WishlistProvider';
 import WishlistDropdown from '../wishlist-dropdown';
+import { retrieveCart } from '@/services/cart';
 
 const Navbar = () => {
   const { toggle: toggleDrawer, isOpen } = useToggle();

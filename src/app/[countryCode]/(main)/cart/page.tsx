@@ -1,11 +1,10 @@
-import { retrieveCart } from '@/lib/data/cart';
-
-import { retrieveCustomer } from '@/lib/data/customer';
+import { retrieveCustomer } from '@/services/customer';
 import Banner from '@/components/elements/banner';
 
 import EmptyCartMessage from '@/cart/components/empty-cart-message';
 import CartTable from '@/components/molecules/cart-table';
 import CartSummary from '@/components/molecules/cart-summary';
+import { retrieveCart } from '@/services/cart';
 
 const CartPage = async () => {
   const cart = await retrieveCart();

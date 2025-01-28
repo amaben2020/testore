@@ -5,7 +5,7 @@ import { Button, Heading, useToggleState } from '@medusajs/ui';
 import { useEffect, useState, useActionState } from 'react';
 
 import { HttpTypes } from '@medusajs/types';
-import { addCustomerAddress } from '@/lib/data/customer';
+import { addCustomerAddress } from '@/services/customer';
 import { SubmitButton } from '@/components/organisms/checkout/components/submit-button';
 import { Dialog } from '@headlessui/react';
 import Input from '@/components/elements/input';

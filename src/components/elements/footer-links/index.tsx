@@ -1,4 +1,4 @@
-import { TSocialLinks } from './data/data';
+import { TSocialLinks } from './services/data';
 
 const FooterLinks = ({
   data,

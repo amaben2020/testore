@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import Button from '../button';
 import clsx from 'clsx';
 import LocalizedClientLink from '../localized-link';
-import { addToCart } from '@/lib/data/cart';
 import { useParams } from 'next/navigation';
 import { useWishlist } from 'providers/WishlistProvider';
+import { addToCart } from '@/services/cart';
 
 type TProductCard = {
   id: string;

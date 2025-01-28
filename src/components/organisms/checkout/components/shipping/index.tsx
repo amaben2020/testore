@@ -1,10 +1,15 @@
 'use client';
 
-import { retrieveCustomer } from '@/lib/data/customer';
+import { retrieveCustomer } from '@/services/customer';
+import {
+  createPaymentCollection,
+  createPaymentSession,
+} from '@/services/payment-collection';
 import { HttpTypes } from '@medusajs/types';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { PaystackButton } from 'react-paystack';
+import axios from 'axios';
 
 export default function PaymentAndShipping({
   cart,
@@ -44,32 +49,60 @@ export default function PaymentAndShipping({
   }
 
   const handleSuccess = async () => {
+    const cartItem = {
+      cart_id: cart?.id,
+    };
     try {
-      // Complete the cart
-      const completeResponse = await fetch(
-        `http://localhost:9000/store/carts/${cart.id}/complete`,
+      const paymentCollectionResponse = await axios.post(
+        'http://localhost:9000/store/payment-collections',
+        cartItem,
         {
-          credentials: 'include',
           headers: {
             'x-publishable-api-key':
-              process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY || 'temp',
+              process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY ?? '',
           },
-          method: 'POST',
         }
       );
 
-      const completeData = await completeResponse.json();
+      const { data: collectionResp } = paymentCollectionResponse;
 
-      if (completeData.type === 'order' && completeData.order) {
-        // Clear the cart manually
-        await fetch(`http://localhost:9000/store/carts/${cart.id}`, {
-          credentials: 'include',
+      console.log('collectionResp', collectionResp.payment_collection);
+
+      const { data: paymentSessionResponse } = await axios.post(
+        `http://localhost:9000/store/payment-collections/${collectionResp?.payment_collection.id}/payment-sessions`,
+        { provider_id: 'pp_system_default' },
+        {
           headers: {
             'x-publishable-api-key':
               process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY || 'temp',
           },
-          method: 'DELETE',
-        });
+        }
+      );
+
+      // Step 3: Complete the Cart
+      const { data: completeResponse } = await axios.post(
+        `http://localhost:9000/store/carts/${cart.id}/complete`,
+        {},
+        {
+          headers: {
+            'x-publishable-api-key':
+              process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+          },
+        }
+      );
+
+      const completeData = await completeResponse;
+
+      console.log('completeData ====>', completeData);
+
+      if (completeData.type === 'order' && completeData.order) {
+        // Clear the cart manually
+        // await axios.delete(`http://localhost:9000/store/carts/${cart.id}`, {
+        //   headers: {
+        //     'x-publishable-api-key':
+        //       process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY || 'temp',
+        //   },
+        // });
 
         router.push(`/order/${completeData.order.id}`);
       } else {
@@ -77,7 +110,6 @@ export default function PaymentAndShipping({
       }
     } catch (error) {
       console.error('Error completing cart:', error);
-
       if (error instanceof Error)
         setError(
           error.message || 'An error occurred while completing your order.'
@@ -88,7 +120,8 @@ export default function PaymentAndShipping({
   const CURRENT_DOLLAR_RATE = 1700;
 
   const publicKey = process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY || '';
-  const amount = cart?.total * CURRENT_DOLLAR_RATE || 0;
+  // Number(cart?.total * CURRENT_DOLLAR_RATE * 100)
+  const amount = 1000 || 0;
   const email = cart?.email ?? customer?.email ?? 'uzochukwubenamara@gmail.com'; // the last one shouldn't happen
   const currency =
     cart?.region?.currency_code?.toUpperCase() !== 'NGN'

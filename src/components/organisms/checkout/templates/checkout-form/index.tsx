@@ -1,4 +1,4 @@
-import { listCartPaymentMethods } from '@/lib/data/payment';
+import { listCartPaymentMethods } from '@/services/payment';
 import { HttpTypes } from '@medusajs/types';
 import Shipping from '../../components/shipping';
 

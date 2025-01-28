@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useActionState } from 'react';
 
 import AccountInfo from '../account-info';
 import { HttpTypes } from '@medusajs/types';
-import { addCustomerAddress, updateCustomerAddress } from '@/lib/data/customer';
+import { addCustomerAddress, updateCustomerAddress } from '@/services/customer';
 import Input from '@/components/elements/input';
 import NativeSelect from '@/components/elements/native-select';
 

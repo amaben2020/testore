@@ -1,5 +1,5 @@
 import OrderDetailsTemplate from '@/components/organisms/order/templates/order-details-template';
-import { retrieveOrder } from '@/lib/data/orders';
+import { retrieveOrder } from '@/services/orders';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 

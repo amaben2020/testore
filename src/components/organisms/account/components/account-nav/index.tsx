@@ -3,7 +3,7 @@
 import { clx } from '@medusajs/ui';
 import { ArrowRightOnRectangle } from '@medusajs/icons';
 import { useParams, usePathname } from 'next/navigation';
-import { signout } from '@/lib/data/customer';
+import { signout } from '@/services/customer';
 import { HttpTypes } from '@medusajs/types';
 import LocalizedClientLink from '@/components/elements/localized-link';
 import ChevronDown from '@/components/icons/chevron-down';

@@ -6,7 +6,7 @@ import { Text, Heading, Input, IconButton } from '@medusajs/ui';
 
 import { CheckCircleMiniSolid, XCircleSolid } from '@medusajs/icons';
 import { useEffect, useState } from 'react';
-import { createTransferRequest } from '@/lib/data/orders';
+import { createTransferRequest } from '@/services/orders';
 import { SubmitButton } from '@/components/organisms/checkout/components/submit-button';
 
 export default function TransferRequestForm() {
